@@ -36,7 +36,7 @@ function* runLayer(view: any, item: any, refs: any) {
 
   if (item.type === 'video') {
     refs[item.id]        = createRef<Video>();
-    const prevVideoId    = item.prevVideoId ?? null;
+    const prevVideoId    = item.prevVideoId ?? null;          // set by config for swipe
     const transition     = item.transition ?? null;
     const transType      = transition?.type ?? 'none';
     const transDuration  = transition?.duration ?? 1;
@@ -62,7 +62,7 @@ function* runLayer(view: any, item: any, refs: any) {
 
     /* ── SWIPE-LEFT-BLUR ───────────────────────────────────────────── */
     if (transType === 'swipe-left-blur') {
-
+      
       const inRef  = refs[item.id];
       const outRef = prevVideoId ? refs[prevVideoId] : null;
 
@@ -178,11 +178,52 @@ function* runLayer(view: any, item: any, refs: any) {
     }
   }
 
-  /* PLAIN TEXT — with optional wipe-right reveal */
   if (item.type === 'text') {
     refs[item.id] = createRef<Txt>();
 
-    const wipeRight = item.animation?.wipeRight;
+    const wipeRight   = item.animation?.wipeRight;
+    const slideInLeft = item.animation?.slideInLeft;
+    if (slideInLeft) {
+      const tx       = toSceneX(pos.x);
+      const ty       = toSceneY(pos.y);
+      const fSize    = item.fontSize ?? 80;
+      const slideTime = slideInLeft.time ?? 0.2;
+
+      // Start position: right edge of screen + half text width offset
+      const startX = WIDTH / 2 + 200; // safely off-screen right
+
+      view.add(
+        <Txt
+          ref={refs[item.id]}
+          text={item.text}
+          fontSize={fSize}
+          fill={item.color ?? 'white'}
+          x={startX}
+          y={ty}
+          textAlign={'center'}
+          opacity={0}
+          zIndex={item.zIndex ?? 1}
+        />
+      );
+
+      yield* waitFor(0);
+
+      yield* tween(slideTime, v => {
+        const ease = easeInOutCubic(v);
+        // x: slides from startX → tx (final config position)
+        refs[item.id]().x(startX + (tx - startX) * ease);
+        // opacity: 0 → 1
+        refs[item.id]().opacity(ease);
+      });
+
+      // Snap to exact final position
+      refs[item.id]().x(tx);
+      refs[item.id]().opacity(1);
+
+      const holdTime = (item.duration ?? 0) - slideTime;
+      if (holdTime > 0) yield* waitFor(holdTime);
+      return;
+    }
 
     if (wipeRight) {
       const maskRef = createRef<Rect>();

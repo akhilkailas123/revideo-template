@@ -24,15 +24,15 @@
       "offset": 17
     },
     {
-      "id": "logo-bottom-left",
+      "id": "company-logo",
       "type": "image",
       "src": "https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png",
       "start": 0,
       "duration": 20,
       "width": 400,
       "position": {
-        "x": 0.15,
-        "y": 0.8
+        "x": 0.156,
+        "y": 0.181
       },
       "animation": {
         "fadeIn": {
@@ -41,34 +41,34 @@
       }
     },
     {
-      "id": "title-month",
+      "id": "tagline-1",
       "type": "text",
-      "text": "September",
+      "text": "SERVICE HERE WITH CONFIDENCE",
       "fontSize": 60,
       "color": "#ffffff",
       "start": 2,
       "duration": 18,
       "position": {
-        "x": 0.285,
-        "y": 0.303
+        "x": 0.256,
+        "y": 0.074
       },
       "animation": {
-        "wipeRight": {
-          "time": 0.9
+        "slideInLeft": {
+          "time": 0.2
         }
       }
     },
     {
-      "id": "title-sub",
+      "id": "tagline-2",
       "type": "text",
-      "text": "Birthdays",
+      "text": "AAA Aproved Auto Repair Facility",
       "fontSize": 60,
-      "color": "#ffd700",
+      "color": "#ffffff",
       "start": 2,
-      "duration": 17,
+      "duration": 18,
       "position": {
-        "x": 0.28,
-        "y": 0.382
+        "x": 0.212,
+        "y": 0.311
       },
       "animation": {
         "wipeRight": {
@@ -77,39 +77,22 @@
       }
     },
     {
-      "id": "scroll-text",
-      "type": "scroll-text",
-      "start": 3,
-      "duration": 17,
-      "fontSize": 48,
-      "lineHeight": 90,
-      "color": "#ffd700",
-      "scrollArea": {
-        "x": 0.73,
-        "y": 0.5,
-        "width": 0.38,
-        "height": 0.8
+      "id": "tagline-3",
+      "type": "text",
+      "text": "Members Receive",
+      "fontSize": 60,
+      "color": "#ffffff",
+      "start": 2,
+      "duration": 18,
+      "position": {
+        "x": 0.181,
+        "y": 0.413
       },
-      "lines": [
-        "Sep 1  \u2013  Alice Johnson",
-        "Sep 3  \u2013  Bob Smith",
-        "",
-        "Sep 7  \u2013  Carol White",
-        "Sep 7  \u2013  David Lee",
-        "",
-        "Sep 12 \u2013  Emma Brown",
-        "",
-        "Sep 15 \u2013  Frank Miller",
-        "Sep 15 \u2013  Grace Wilson",
-        "Sep 15 \u2013  Henry Moore",
-        "",
-        "Sep 20 \u2013  Isabella Taylor",
-        "",
-        "Sep 25 \u2013  James Anderson",
-        "Sep 25 \u2013  Karen Thomas",
-        "",
-        "Sep 30 \u2013  Liam Jackson"
-      ]
+      "animation": {
+        "wipeRight": {
+          "time": 0.9
+        }
+      }
     }
   ]
 }
