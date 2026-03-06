@@ -145,6 +145,7 @@ function* runLayer(view: any, item: any, refs: any) {
           clip={true}
           zIndex={item.zIndex ?? 1}
         >
+          
           <Txt
             ref={refs[item.id]}
             text={item.text}
@@ -165,6 +166,10 @@ function* runLayer(view: any, item: any, refs: any) {
         maskRef().width(w);
         refs[item.id]().x(tx - (tx - realW / 2 + w / 2));
       });
+
+      const holdTime = (item.duration ?? 0) - revealTime;
+      if (holdTime > 0) yield* waitFor(holdTime);
+      return;
 
     } else {
       view.add(
@@ -193,7 +198,7 @@ function* runLayer(view: any, item: any, refs: any) {
     const areaH      = area.height * HEIGHT;
     const totalH     = lines.length * lineHeight;
     const lineRefs: any[] = lines.map(() => createRef<Txt>());
-    const initYs = lines.map((_: any, i: number) => areaH / 2 + lineHeight / 2 + i * lineHeight);
+    const initYs = lines.map((_: any, i: number) => areaH / 2 - lineHeight / 2 + (i + 1) * lineHeight);
     view.add(
       <Rect
         x={areaX}
@@ -218,12 +223,11 @@ function* runLayer(view: any, item: any, refs: any) {
         ))}
       </Rect>
     );
-
     yield* waitFor(0);
     const scrollDist = areaH + lineHeight + totalH;
     const duration   = item.duration ?? 10;
     yield* tween(duration, value => {
-      const offset = scrollDist * easeInOutCubic(value);
+      const offset = scrollDist * value;
       lineRefs.forEach((ref: any, i: number) => {
         ref().y(initYs[i] - offset);
       });

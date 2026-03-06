@@ -79,8 +79,8 @@
     {
       "id": "scroll-text",
       "type": "scroll-text",
-      "start": 1,
-      "duration": 18,
+      "start": 3,
+      "duration": 17,
       "fontSize": 48,
       "lineHeight": 90,
       "color": "#ffd700",
