@@ -1,9 +1,6 @@
 {
   "settings": {
-    "size": {
-      "x": 1920,
-      "y": 1080
-    },
+    "size": { "x": 1920, "y": 1080 },
     "background": "#000000"
   },
   "timeline": [
@@ -30,14 +27,9 @@
       "start": 0,
       "duration": 20,
       "width": 400,
-      "position": {
-        "x": 0.15,
-        "y": 0.80
-      },
+      "position": { "x": 0.15, "y": 0.80 },
       "animation": {
-        "fadeIn": {
-          "time": 0.1
-        }
+        "fadeIn": { "time": 0.1 }
       }
     },
     {
@@ -47,11 +39,8 @@
       "fontSize": 60,
       "color": "#ffffff",
       "start": 1,
-      "duration": 10,
-      "position": {
-        "x": 0.285,
-        "y": 0.303
-      }
+      "duration": 18,
+      "position": { "x": 0.285, "y": 0.303 }
     },
     {
       "id": "title-sub",
@@ -59,25 +48,44 @@
       "text": "Birthdays",
       "fontSize": 60,
       "color": "#ffd700",
-      "start": 2,
-      "duration": 10,
-      "position": {
-        "x": 0.280,
-        "y": 0.382
-      }
+      "start": 1,
+      "duration": 17,
+      "position": { "x": 0.280, "y": 0.382 }
     },
     {
       "id": "scroll-text",
-      "type": "text",
-      "text": "Month/day name /n month/day name",
-      "fontSize": 60,
+      "type": "scroll-text",
+      "start": 1,
+      "duration": 18,
+      "fontSize": 48,
+      "lineHeight": 90,
       "color": "#ffd700",
-      "start": 2,
-      "duration": 10,
-      "position": {
+      "scrollArea": {
         "x": 0.730,
-        "y": 0.531
-      }
+        "y": 0.500,
+        "width": 0.38,
+        "height": 0.80
+      },
+      "lines": [
+        "Sep 1  –  Alice Johnson",
+        "Sep 3  –  Bob Smith",
+        "",
+        "Sep 7  –  Carol White",
+        "Sep 7  –  David Lee",
+        "",
+        "Sep 12 –  Emma Brown",
+        "",
+        "Sep 15 –  Frank Miller",
+        "Sep 15 –  Grace Wilson",
+        "Sep 15 –  Henry Moore",
+        "",
+        "Sep 20 –  Isabella Taylor",
+        "",
+        "Sep 25 –  James Anderson",
+        "Sep 25 –  Karen Thomas",
+        "",
+        "Sep 30 –  Liam Jackson"
+      ]
     }
   ]
 }

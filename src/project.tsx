@@ -4,6 +4,9 @@ import {
   createRef,
   all,
   chain,
+  tween,
+  easeInOutCubic,
+  Signal,
 } from '@revideo/core';
 import {
   makeScene2D,
@@ -11,29 +14,22 @@ import {
   Video,
   Audio,
   Txt,
+  Rect,
 } from '@revideo/2d';
 import config from './video.config.json';
 
-const WIDTH = config.settings.size.x;
+const WIDTH  = config.settings.size.x;
 const HEIGHT = config.settings.size.y;
 
-/* normalized → scene coordinates (center-anchored) */
-function toSceneX(x: number) {
-  return (x - 0.5) * WIDTH;
-}
-function toSceneY(y: number) {
-  return (y - 0.5) * HEIGHT;
-}
+function toSceneX(x: number) { return (x - 0.5) * WIDTH;  }
+function toSceneY(y: number) { return (y - 0.5) * HEIGHT; }
 
 const scene = makeScene2D('scene', function* (view) {
   const refs: Record<string, any> = {};
-  const tasks = config.timeline.map(item =>
-    runLayer(view, item, refs)
-  );
+  const tasks = config.timeline.map(item => runLayer(view, item, refs));
   yield* all(...tasks);
 });
 
-/* layer runner */
 function* runLayer(view: any, item: any, refs: any) {
   yield* waitFor(item.start ?? 0);
 
@@ -54,11 +50,7 @@ function* runLayer(view: any, item: any, refs: any) {
   /* AUDIO */
   if (item.type === 'audio') {
     view.add(
-      <Audio
-        src={item.src}
-        play
-        time={item.offset ?? 0}
-      />
+      <Audio src={item.src} play time={item.offset ?? 0} />
     );
   }
 
@@ -67,20 +59,13 @@ function* runLayer(view: any, item: any, refs: any) {
     refs[item.id] = createRef<Img>();
 
     const imgWidth  = item.width  ?? 200;
-    const imgHeight = item.height ?? imgWidth; // assume square unless specified
-
-    // Clamp so the image stays fully inside the canvas:
-    // toSceneX/Y give the center position, so we nudge inward by half the size.
+    const imgHeight = item.height ?? imgWidth;
     const halfW = imgWidth  / 2;
     const halfH = imgHeight / 2;
-
-    const rawX = toSceneX(pos.x);
-    const rawY = toSceneY(pos.y);
-
+    const rawX  = toSceneX(pos.x);
+    const rawY  = toSceneY(pos.y);
     const clampedX = Math.max(-WIDTH  / 2 + halfW, Math.min(WIDTH  / 2 - halfW, rawX));
     const clampedY = Math.max(-HEIGHT / 2 + halfH, Math.min(HEIGHT / 2 - halfH, rawY));
-
-    // Start invisible if fadeIn animation is defined
     const startOpacity = item.animation?.fadeIn ? 0 : 1;
 
     view.add(
@@ -98,30 +83,27 @@ function* runLayer(view: any, item: any, refs: any) {
     if (item.animation) {
       yield* chain(
         all(
-          // Fade in
           ...(item.animation.fadeIn
             ? [refs[item.id]().opacity(1, item.animation.fadeIn.time ?? 0.1)]
             : []),
-          // Scale in + rotate (run alongside fade)
           refs[item.id]().scale(
             item.animation.scaleIn?.value ?? 1,
-            item.animation.scaleIn?.time  ?? 0
+            item.animation.scaleIn?.time  ?? 0,
           ),
           refs[item.id]().rotation(
             item.animation.rotate?.value ?? 0,
-            item.animation.rotate?.time  ?? 0
-          )
+            item.animation.rotate?.time  ?? 0,
+          ),
         ),
-        // Scale out after
         refs[item.id]().scale(
           item.animation.scaleOut?.value ?? 1,
-          item.animation.scaleOut?.time  ?? 0
-        )
+          item.animation.scaleOut?.time  ?? 0,
+        ),
       );
     }
   }
 
-  /* TEXT */
+  /* PLAIN TEXT */
   if (item.type === 'text') {
     refs[item.id] = createRef<Txt>();
     view.add(
@@ -137,6 +119,60 @@ function* runLayer(view: any, item: any, refs: any) {
     );
   }
 
+  if (item.type === 'scroll-text') {
+    const lines: string[]    = item.lines ?? [];
+    const fontSize: number   = item.fontSize  ?? 50;
+    const lineHeight: number = item.lineHeight ?? Math.round(fontSize * 1.6);
+    const color: string      = item.color ?? '#ffffff';
+    const area       = item.scrollArea ?? { x: 0.5, y: 0.5, width: 0.4, height: 0.6 };
+    const areaX      = toSceneX(area.x);
+    const areaY      = toSceneY(area.y);
+    const areaW      = area.width  * WIDTH;
+    const areaH      = area.height * HEIGHT;
+    const totalH     = lines.length * lineHeight;
+    const lineRefs: any[] = lines.map(() => createRef<Txt>());
+    const initYs = lines.map((_: any, i: number) => areaH / 2 + lineHeight / 2 + i * lineHeight);
+
+    view.add(
+      <Rect
+        x={areaX}
+        y={areaY}
+        width={areaW}
+        height={areaH}
+        clip={true}
+        zIndex={item.zIndex ?? 2}
+      >
+        {lines.map((line: string, i: number) => (
+          <Txt
+            ref={lineRefs[i]}
+            key={i}
+            text={line === '' ? ' ' : line}
+            fontSize={fontSize}
+            fill={line === '' ? '#00000000' : color}
+            textAlign={'center'}
+            width={areaW}
+            x={0}
+            y={initYs[i]}
+          />
+        ))}
+      </Rect>
+    );
+
+    yield* waitFor(0);
+
+    const scrollDist = areaH + lineHeight + totalH;
+    const duration   = item.duration ?? 10;
+
+    yield* tween(duration, value => {
+      const offset = scrollDist * easeInOutCubic(value);
+      lineRefs.forEach((ref: any, i: number) => {
+        ref().y(initYs[i] - offset);
+      });
+    });
+
+    return;
+  }
+
   if (item.duration) {
     yield* waitFor(item.duration);
   }
@@ -144,9 +180,5 @@ function* runLayer(view: any, item: any, refs: any) {
 
 export default makeProject({
   scenes: [scene],
-  settings: {
-    shared: {
-      size: config.settings.size,
-    },
-  },
+  settings: { shared: { size: config.settings.size } },
 });
