@@ -106,17 +106,79 @@ function* runLayer(view: any, item: any, refs: any) {
   /* PLAIN TEXT */
   if (item.type === 'text') {
     refs[item.id] = createRef<Txt>();
-    view.add(
-      <Txt
-        ref={refs[item.id]}
-        text={item.text}
-        fontSize={item.fontSize ?? 80}
-        fill={item.color ?? 'white'}
-        x={toSceneX(pos.x)}
-        y={toSceneY(pos.y)}
-        zIndex={item.zIndex ?? 1}
-      />
-    );
+
+    const wipeRight = item.animation?.wipeRight;
+
+    if (wipeRight) {
+      
+      const maskRef  = createRef<Rect>();
+      const txtRef2  = createRef<Txt>();
+      const tx       = toSceneX(pos.x);
+      const ty       = toSceneY(pos.y);
+      const fSize    = item.fontSize ?? 80;
+
+      view.add(
+        <Txt
+          ref={txtRef2}
+          text={item.text}
+          fontSize={fSize}
+          fill={item.color ?? 'white'}
+          x={tx}
+          y={ty}
+          textAlign={'center'}
+          zIndex={item.zIndex ?? 1}
+          opacity={0}
+        />
+      );
+
+      yield* waitFor(0);
+      const realW  = txtRef2().size().x;
+      const realH  = txtRef2().size().y;
+
+      view.add(
+        <Rect
+          ref={maskRef}
+          x={tx - realW / 2}
+          y={ty}
+          width={0}
+          height={realH * 1.1}
+          clip={true}
+          zIndex={item.zIndex ?? 1}
+        >
+          <Txt
+            ref={refs[item.id]}
+            text={item.text}
+            fontSize={fSize}
+            fill={item.color ?? 'white'}
+            x={realW / 2}
+            y={0}
+            textAlign={'center'}
+          />
+        </Rect>
+      );
+      txtRef2().remove();
+      const revealTime = wipeRight.time ?? 0.9;
+
+      yield* tween(revealTime, v => {
+        const w = realW * easeInOutCubic(v);
+        maskRef().x(tx - realW / 2 + w / 2);
+        maskRef().width(w);
+        refs[item.id]().x(tx - (tx - realW / 2 + w / 2));
+      });
+
+    } else {
+      view.add(
+        <Txt
+          ref={refs[item.id]}
+          text={item.text}
+          fontSize={item.fontSize ?? 80}
+          fill={item.color ?? 'white'}
+          x={toSceneX(pos.x)}
+          y={toSceneY(pos.y)}
+          zIndex={item.zIndex ?? 1}
+        />
+      );
+    }
   }
 
   if (item.type === 'scroll-text') {
@@ -132,7 +194,6 @@ function* runLayer(view: any, item: any, refs: any) {
     const totalH     = lines.length * lineHeight;
     const lineRefs: any[] = lines.map(() => createRef<Txt>());
     const initYs = lines.map((_: any, i: number) => areaH / 2 + lineHeight / 2 + i * lineHeight);
-
     view.add(
       <Rect
         x={areaX}
@@ -159,10 +220,8 @@ function* runLayer(view: any, item: any, refs: any) {
     );
 
     yield* waitFor(0);
-
     const scrollDist = areaH + lineHeight + totalH;
     const duration   = item.duration ?? 10;
-
     yield* tween(duration, value => {
       const offset = scrollDist * easeInOutCubic(value);
       lineRefs.forEach((ref: any, i: number) => {
