@@ -8,228 +8,76 @@
   },
   "timeline": [
     {
-      "id": "image-0",
-      "zIndex": 0,
-      "startTime": 1.0,
-      "duration": 119.0,
-      "transition": {
-        "type": "crossFade",
-        "duration": 1.0,
-        "delay": 0.0
-      },
-      "opacityKeyframes": [
-        {
-          "time": 0.0,
-          "value": 1.0
-        },
-        {
-          "time": 119.0,
-          "value": 1.0
-        }
-      ],
-      "type": "image",
-      "src": "https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png",
-      "position": {
-        "x": -741.0,
-        "y": 446.0
-      },
-      "size": {
-        "width": 384,
-        "height": 196
-      },
-      "opacity": 1,
-      "rotation": 0
-    },
-    {
-      "id": "text-1",
-      "zIndex": 1,
-      "startTime": 4.0,
-      "duration": 116.0,
-      "transition": {
-        "type": "wipeRight",
-        "duration": 3.0,
-        "delay": 1.0
-      },
-      "opacityKeyframes": [
-        {
-          "time": 0.0,
-          "value": 1.0
-        },
-        {
-          "time": 116.0,
-          "value": 1.0
-        }
-      ],
-      "type": "text",
-      "text": "{{September}}",
-      "position": {
-        "x": -367.0,
-        "y": -213.5
-      },
-      "size": {
-        "width": 432,
-        "height": 165
-      },
-      "fontSize": 52.0,
-      "fontFamily": "Oswald",
-      "fill": "#ffffff",
-      "opacity": 1,
-      "rotation": 0,
-      "textAlign": "left",
-      "lineHeight": 1.05,
-      "letterSpacing": -1.0,
-      "verticalAlign": "top"
-    },
-    {
-      "id": "text-2",
-      "zIndex": 2,
-      "startTime": 4.0,
-      "duration": 116.0,
-      "transition": {
-        "type": "wipeRight",
-        "duration": 3.0,
-        "delay": 1.0
-      },
-      "opacityKeyframes": [
-        {
-          "time": 0.0,
-          "value": 1.0
-        },
-        {
-          "time": 116.0,
-          "value": 1.0
-        }
-      ],
-      "type": "text",
-      "text": "Birthdays",
-      "position": {
-        "x": -181.0,
-        "y": -140.5
-      },
-      "size": {
-        "width": 804,
-        "height": 165
-      },
-      "fontSize": 80.0,
-      "fontFamily": "Playball",
-      "fill": "#ffffff",
-      "opacity": 1,
-      "rotation": -2,
-      "textAlign": "left",
-      "lineHeight": 1.05,
-      "letterSpacing": -1.0,
-      "verticalAlign": "top"
-    },
-    {
-      "id": "image-3",
-      "zIndex": 3,
-      "startTime": 0.0,
-      "duration": 120.0,
-      "opacityKeyframes": [
-        {
-          "time": 0.0,
-          "value": 1.0
-        },
-        {
-          "time": 120.0,
-          "value": 1.0
-        }
-      ],
-      "type": "image",
-      "src": "https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png",
-      "position": {
-        "x": 0.0,
-        "y": 0.0
-      },
-      "size": {
-        "width": 1920,
-        "height": 1080
-      },
-      "opacity": 1,
-      "rotation": 0
-    },
-    {
-      "id": "text-4",
-      "zIndex": 4,
-      "startTime": 1.0,
-      "duration": 119.0,
-      "transition": {
-        "type": "crossFade",
-        "duration": 1.0,
-        "delay": 0.0
-      },
-      "opacityKeyframes": [
-        {
-          "time": 0.0,
-          "value": 1.0
-        },
-        {
-          "time": 119.0,
-          "value": 1.0
-        }
-      ],
-      "type": "text",
-      "text": "{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}\n{{Month/Day - Name}}",
-      "position": {
-        "x": 429.0,
-        "y": -84.5
-      },
-      "size": {
-        "width": 1114,
-        "height": 8795
-      },
-      "fontSize": 58.0,
-      "fontFamily": "Roboto",
-      "fill": "#ffffff",
-      "opacity": 1,
-      "rotation": 0,
-      "textAlign": "center",
-      "lineHeight": 3.0,
-      "letterSpacing": 0.0,
-      "verticalAlign": "top",
-      "kenBurns": {
-        "startTop": 850,
-        "startLeft": 832,
-        "startWidth": 1920,
-        "startHeight": 1080,
-        "endTop": -8700,
-        "endLeft": 832,
-        "endWidth": 1920,
-        "endHeight": 1080
-      },
-      "scrollStartY": 4660.0,
-      "scrollEndY": -4890.0,
-      "scrollBlockH": 8700.0
-    },
-    {
-      "id": "video-5",
-      "zIndex": 5,
-      "startTime": 0.0,
-      "duration": 120.0,
-      "opacityKeyframes": [
-        {
-          "time": 0.0,
-          "value": 1.0
-        },
-        {
-          "time": 120.0,
-          "value": 1.0
-        }
-      ],
+      "id": "background-video",
       "type": "video",
       "src": "https://revideo-example-assets.s3.amazonaws.com/stars.mp4",
+      "start": 0,
+      "duration": 20,
+      "zIndex": 0
+    },
+    {
+      "id": "background-music",
+      "type": "audio",
+      "src": "https://revideo-example-assets.s3.amazonaws.com/chill-beat.mp3",
+      "start": 0,
+      "duration": 20,
+      "offset": 17
+    },
+    {
+      "id": "logo-bottom-left",
+      "type": "image",
+      "src": "https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png",
+      "start": 0,
+      "duration": 20,
+      "width": 400,
       "position": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 0.15,
+        "y": 0.80
       },
-      "size": {
-        "width": 1920,
-        "height": 1080
-      },
-      "opacity": 1,
-      "loop": false,
-      "play": true,
-      "volume": 1.0
+      "animation": {
+        "fadeIn": {
+          "time": 0.1
+        }
+      }
+    },
+    {
+      "id": "title-month",
+      "type": "text",
+      "text": "September",
+      "fontSize": 60,
+      "color": "#ffffff",
+      "start": 1,
+      "duration": 10,
+      "position": {
+        "x": 0.285,
+        "y": 0.303
+      }
+    },
+    {
+      "id": "title-sub",
+      "type": "text",
+      "text": "Birthdays",
+      "fontSize": 60,
+      "color": "#ffd700",
+      "start": 2,
+      "duration": 10,
+      "position": {
+        "x": 0.280,
+        "y": 0.382
+      }
+    },
+    {
+      "id": "scroll-text",
+      "type": "text",
+      "text": "Month/day name /n month/day name",
+      "fontSize": 60,
+      "color": "#ffd700",
+      "start": 2,
+      "duration": 10,
+      "position": {
+        "x": 0.730,
+        "y": 0.531
+      }
     }
   ]
 }
