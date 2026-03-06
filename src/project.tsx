@@ -6,7 +6,6 @@ import {
   chain,
   tween,
   easeInOutCubic,
-  Signal,
 } from '@revideo/core';
 import {
   makeScene2D,
@@ -35,16 +34,92 @@ function* runLayer(view: any, item: any, refs: any) {
 
   const pos = item.position ?? { x: 0.5, y: 0.5 };
 
-  /* VIDEO */
   if (item.type === 'video') {
+    refs[item.id]        = createRef<Video>();
+    const prevVideoId    = item.prevVideoId ?? null;
+    const transition     = item.transition ?? null;
+    const transType      = transition?.type ?? 'none';
+    const transDuration  = transition?.duration ?? 1;
+    const zIdx           = item.zIndex ?? 0;
+
+    /* ── FADE ──────────────────────────────────────────────────────── */
+    if (transType === 'fade') {
+      view.add(
+        <Video
+          ref={refs[item.id]}
+          src={item.src}
+          play
+          size={['100%', '100%']}
+          opacity={0}
+          zIndex={zIdx}
+        />
+      );
+      yield* refs[item.id]().opacity(1, transDuration);
+      const holdTime = (item.duration ?? 0) - transDuration;
+      if (holdTime > 0) yield* waitFor(holdTime);
+      return;
+    }
+
+    /* ── SWIPE-LEFT-BLUR ───────────────────────────────────────────── */
+    if (transType === 'swipe-left-blur') {
+
+      const inRef  = refs[item.id];
+      const outRef = prevVideoId ? refs[prevVideoId] : null;
+
+      view.add(
+        <Video
+          ref={inRef}
+          src={item.src}
+          play
+          size={['100%', '100%']}
+          x={WIDTH}              // start fully off-screen right
+          zIndex={zIdx + 1}      // sit above outgoing video
+        />
+      );
+
+      yield* waitFor(0); // let node initialise
+
+      yield* tween(transDuration, v => {
+        const ease  = easeInOutCubic(v);
+        // Blur peaks (maxBlur px) at v=0.5 then drops back to 0
+        const maxBlur = 40;
+        const blur  = maxBlur * Math.sin(Math.PI * v);
+
+        // Incoming: slide from WIDTH → 0
+        inRef().x(WIDTH * (1 - ease));
+        inRef().filters([{ type: 'blur', radius: blur }] as any);
+
+        // Outgoing: slide from 0 → -WIDTH
+        if (outRef) {
+          outRef().x(-WIDTH * ease);
+          outRef().filters([{ type: 'blur', radius: blur }] as any);
+        }
+      });
+
+      // Snap to clean final state
+      inRef().x(0);
+      inRef().filters([]);
+      if (outRef) {
+        outRef().filters([]);
+      }
+
+      const holdTime = (item.duration ?? 0) - transDuration;
+      if (holdTime > 0) yield* waitFor(holdTime);
+      return;
+    }
+
+    /* ── NO TRANSITION (default) ───────────────────────────────────── */
     view.add(
       <Video
+        ref={refs[item.id]}
         src={item.src}
         play
         size={['100%', '100%']}
-        zIndex={item.zIndex ?? 0}
+        zIndex={zIdx}
       />
     );
+    if (item.duration) yield* waitFor(item.duration);
+    return;
   }
 
   /* AUDIO */
@@ -103,19 +178,18 @@ function* runLayer(view: any, item: any, refs: any) {
     }
   }
 
-  /* PLAIN TEXT */
+  /* PLAIN TEXT — with optional wipe-right reveal */
   if (item.type === 'text') {
     refs[item.id] = createRef<Txt>();
 
     const wipeRight = item.animation?.wipeRight;
 
     if (wipeRight) {
-      
-      const maskRef  = createRef<Rect>();
-      const txtRef2  = createRef<Txt>();
-      const tx       = toSceneX(pos.x);
-      const ty       = toSceneY(pos.y);
-      const fSize    = item.fontSize ?? 80;
+      const maskRef = createRef<Rect>();
+      const txtRef2 = createRef<Txt>();
+      const tx      = toSceneX(pos.x);
+      const ty      = toSceneY(pos.y);
+      const fSize   = item.fontSize ?? 80;
 
       view.add(
         <Txt
@@ -132,8 +206,9 @@ function* runLayer(view: any, item: any, refs: any) {
       );
 
       yield* waitFor(0);
-      const realW  = txtRef2().size().x;
-      const realH  = txtRef2().size().y;
+
+      const realW = txtRef2().size().x;
+      const realH = txtRef2().size().y;
 
       view.add(
         <Rect
@@ -145,7 +220,6 @@ function* runLayer(view: any, item: any, refs: any) {
           clip={true}
           zIndex={item.zIndex ?? 1}
         >
-          
           <Txt
             ref={refs[item.id]}
             text={item.text}
@@ -157,7 +231,9 @@ function* runLayer(view: any, item: any, refs: any) {
           />
         </Rect>
       );
+
       txtRef2().remove();
+
       const revealTime = wipeRight.time ?? 0.9;
 
       yield* tween(revealTime, v => {
@@ -186,19 +262,25 @@ function* runLayer(view: any, item: any, refs: any) {
     }
   }
 
+  /* SCROLL TEXT */
   if (item.type === 'scroll-text') {
     const lines: string[]    = item.lines ?? [];
     const fontSize: number   = item.fontSize  ?? 50;
     const lineHeight: number = item.lineHeight ?? Math.round(fontSize * 1.6);
     const color: string      = item.color ?? '#ffffff';
-    const area       = item.scrollArea ?? { x: 0.5, y: 0.5, width: 0.4, height: 0.6 };
-    const areaX      = toSceneX(area.x);
-    const areaY      = toSceneY(area.y);
-    const areaW      = area.width  * WIDTH;
-    const areaH      = area.height * HEIGHT;
-    const totalH     = lines.length * lineHeight;
+
+    const area  = item.scrollArea ?? { x: 0.5, y: 0.5, width: 0.4, height: 0.6 };
+    const areaX = toSceneX(area.x);
+    const areaY = toSceneY(area.y);
+    const areaW = area.width  * WIDTH;
+    const areaH = area.height * HEIGHT;
+    const totalH = lines.length * lineHeight;
+
     const lineRefs: any[] = lines.map(() => createRef<Txt>());
-    const initYs = lines.map((_: any, i: number) => areaH / 2 - lineHeight / 2 + (i + 1) * lineHeight);
+    const initYs = lines.map((_: any, i: number) =>
+      areaH / 2 - lineHeight / 2 + (i + 1) * lineHeight
+    );
+
     view.add(
       <Rect
         x={areaX}
@@ -223,9 +305,12 @@ function* runLayer(view: any, item: any, refs: any) {
         ))}
       </Rect>
     );
+
     yield* waitFor(0);
+
     const scrollDist = areaH + lineHeight + totalH;
     const duration   = item.duration ?? 10;
+
     yield* tween(duration, value => {
       const offset = scrollDist * value;
       lineRefs.forEach((ref: any, i: number) => {
