@@ -34,6 +34,17 @@ function* runLayer(view: any, item: any, refs: any) {
 
   const pos = item.position ?? { x: 0.5, y: 0.5 };
 
+  /* ----------------------------------------------------------------
+     VIDEO
+     Supports optional transition field:
+       "transition": { "type": "fade", "duration": 1 }
+     When set, the video fades in from opacity 0 over transition.duration
+     seconds at the moment it starts (i.e. the previous video fades out
+     simultaneously because it's simply no longer on top).
+     For the outgoing video we also fade it out at its end if next video
+     has a transition — we handle this by fading the incoming video in
+     on top, which naturally covers the outgoing one.
+  ---------------------------------------------------------------- */
   if (item.type === 'video') {
     refs[item.id]        = createRef<Video>();
     const prevVideoId    = item.prevVideoId ?? null;          // set by config for swipe
@@ -62,7 +73,10 @@ function* runLayer(view: any, item: any, refs: any) {
 
     /* ── SWIPE-LEFT-BLUR ───────────────────────────────────────────── */
     if (transType === 'swipe-left-blur') {
-      
+      // Incoming video starts off-screen to the RIGHT, slides LEFT to centre.
+      // Outgoing video (prevVideoId) slides LEFT off-screen simultaneously.
+      // Both get a blur that peaks at mid-transition and clears at the end.
+
       const inRef  = refs[item.id];
       const outRef = prevVideoId ? refs[prevVideoId] : null;
 
@@ -178,11 +192,19 @@ function* runLayer(view: any, item: any, refs: any) {
     }
   }
 
+  /* PLAIN TEXT — supports wipeRight and slideInLeft animations */
   if (item.type === 'text') {
     refs[item.id] = createRef<Txt>();
 
     const wipeRight   = item.animation?.wipeRight;
     const slideInLeft = item.animation?.slideInLeft;
+    const fadeIn      = item.animation?.fadeIn;
+
+    /* ── SLIDE-IN-LEFT ─────────────────────────────────────────────────
+     * Text slides from off-screen RIGHT to its final config x/y position.
+     * Opacity goes from 0 → 1 simultaneously, reaching full opacity at end.
+     * Duration = slideInLeft.time (e.g. 0.2 seconds).
+     * ----------------------------------------------------------------- */
     if (slideInLeft) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
@@ -221,6 +243,46 @@ function* runLayer(view: any, item: any, refs: any) {
       refs[item.id]().opacity(1);
 
       const holdTime = (item.duration ?? 0) - slideTime;
+      if (holdTime > 0) yield* waitFor(holdTime);
+      return;
+    }
+
+    /* ── FADE IN ───────────────────────────────────────────────────────
+     * Opacity goes from 0 → 1 over fadeIn.time seconds at config x/y.
+     * ----------------------------------------------------------------- */
+    if (fadeIn && !wipeRight && !slideInLeft) {
+      const tx       = toSceneX(pos.x);
+      const ty       = toSceneY(pos.y);
+      const fSize    = item.fontSize ?? 80;
+      const fadeTime = fadeIn.time ?? 0.3;
+
+      // Add node with opacity 0 at exact config position
+      view.add(
+        <Txt
+          ref={refs[item.id]}
+          text={item.text}
+          fontSize={fSize}
+          fill={item.color ?? 'white'}
+          x={tx}
+          y={ty}
+          textAlign={'center'}
+          opacity={0}
+          zIndex={item.zIndex ?? 1}
+        />
+      );
+
+      // Wait one full frame so node is mounted and signal is accessible
+      yield* waitFor(0);
+      yield* waitFor(0);
+
+      // Animate opacity 0 → 1 over fadeTime seconds
+      yield* tween(fadeTime, v => {
+        refs[item.id]().opacity(easeInOutCubic(v));
+      });
+
+      // Snap to full opacity and hold for remaining duration
+      refs[item.id]().opacity(1);
+      const holdTime = (item.duration ?? 0) - fadeTime;
       if (holdTime > 0) yield* waitFor(holdTime);
       return;
     }
