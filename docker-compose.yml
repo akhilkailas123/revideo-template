@@ -1,0 +1,25 @@
+services:
+  render:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: revideo-app
+    container_name: revideo-render
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./output:/app/output
+    shm_size: "2gb"
+
+  ui:
+    image: revideo-app
+    container_name: revideo-ui
+    init: true
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./output:/app/output
+    command: npm start
+    shm_size: "2gb"
