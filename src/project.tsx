@@ -28,7 +28,6 @@ import type {
   RectItem,
   Animation,
   Transition,
-  KenBurnsFilter,
   OpacityKeyframe,
 } from './config.types';
 
@@ -36,9 +35,6 @@ const config = rawConfig as VideoConfig;
 const CW = config.settings.size.x;
 const CH = config.settings.size.y;
 
-/* ─────────────────────────────────────────────
-   Opacity keyframe animation
-───────────────────────────────────────────── */
 function* animateOpacity(ref: any, kfs: OpacityKeyframe[]) {
   if (!kfs?.length) return;
   const sorted = [...kfs].sort((a, b) => a.time - b.time);
@@ -49,28 +45,21 @@ function* animateOpacity(ref: any, kfs: OpacityKeyframe[]) {
   }
 }
 
-/* ─────────────────────────────────────────────
-   Compute transition initial position (off-screen start)
-   Call BEFORE yield view.add() so JSX uses correct init position.
-───────────────────────────────────────────── */
 function transitionInitPos(
   finalX: number,
   finalY: number,
   t: Transition
 ): [number, number] {
   switch (t.type) {
-    case 'crossFade': return [finalX, finalY];       // stays in place, just fades
-    case 'wipeRight': return [finalX - CW, finalY];  // enter from left
-    case 'wipeLeft':  return [finalX + CW, finalY];  // enter from right
-    case 'wipeUp':    return [finalX, finalY + CH];  // enter from below
-    case 'wipeDown':  return [finalX, finalY - CH];  // enter from above
+    case 'crossFade': return [finalX, finalY];
+    case 'wipeRight': return [finalX - CW, finalY];
+    case 'wipeLeft':  return [finalX + CW, finalY];
+    case 'wipeUp':    return [finalX, finalY + CH];
+    case 'wipeDown':  return [finalX, finalY - CH];
     default:          return [finalX, finalY];
   }
 }
 
-/* ─────────────────────────────────────────────
-   Run transition move to final position
-───────────────────────────────────────────── */
 function* runTransitionMove(
   ref: any,
   finalX: number,
@@ -95,9 +84,6 @@ function* runTransitionMove(
   }
 }
 
-/* ─────────────────────────────────────────────
-   Single animation tween
-───────────────────────────────────────────── */
 function* runAnimation(ref: any, anim: Animation) {
   if (anim.delay && anim.delay > 0) yield* waitFor(anim.delay);
   switch (anim.type) {
@@ -119,9 +105,6 @@ function* runAnimation(ref: any, anim: Animation) {
   }
 }
 
-/* ─────────────────────────────────────────────
-   VIDEO
-───────────────────────────────────────────── */
 function* runVideo(view: any, item: VideoItem) {
   const ref    = createRef<Video>();
   const finalX = item.position.x;
@@ -156,9 +139,6 @@ function* runVideo(view: any, item: VideoItem) {
   ref().remove();
 }
 
-/* ─────────────────────────────────────────────
-   AUDIO
-───────────────────────────────────────────── */
 function* runAudio(view: any, item: AudioItem) {
   const ref = createRef<Audio>();
   if (item.startTime > 0) yield* waitFor(item.startTime);
@@ -170,9 +150,6 @@ function* runAudio(view: any, item: AudioItem) {
   ref().remove();
 }
 
-/* ─────────────────────────────────────────────
-   IMAGE
-───────────────────────────────────────────── */
 function* runImage(view: any, item: ImageItem) {
   const ref    = createRef<Img>();
   const initOp = item.transition?.type === 'crossFade' ? 0
@@ -217,9 +194,6 @@ function* runImage(view: any, item: ImageItem) {
   ref().remove();
 }
 
-/* ─────────────────────────────────────────────
-   TEXT — plain (no kenBurns)
-───────────────────────────────────────────── */
 function* runText(view: any, item: TextItem) {
   const ref    = createRef<Txt>();
   const initOp = item.transition?.type === 'crossFade' ? 0
@@ -259,39 +233,17 @@ function* runText(view: any, item: TextItem) {
   ref().remove();
 }
 
-/* ─────────────────────────────────────────────
-   SCROLL TEXT — kenBurns on text
-   
-   APPROACH: Use a Layout container (clipped to canvas-visible area for names)
-   with individual Txt nodes per line, all inside.
-   The Layout scrolls from startY to endY.
-   
-   WHY individual lines: Revideo Txt with very large height (8700px) and
-   lineHeight=3.0 can mis-render as a single compressed block.
-   Individual Txt nodes guarantee each name is at the correct Y position.
-   
-   Position math (no offsetY — use centre anchor):
-     text block total height = numLines × fontSize × lineHeight
-     startY (centre) = kenBurns.startTop + blockHeight/2 - CH/2
-     endY   (centre) = kenBurns.endTop   + blockHeight/2 - CH/2
-   
-   X and Y animated separately to avoid position vector conflict.
-───────────────────────────────────────────── */
 function* runScrollText(view: any, item: TextItem) {
   const kb       = item.kenBurns!;
   const fontSize = item.fontSize ?? 58;
   const lhMult   = item.lineHeight ?? 3.0;
-  const lineH    = fontSize * lhMult;           // pixels per line (174px)
+  const lineH    = fontSize * lhMult;
   const lines    = item.text.split('\n').filter((l: string) => l.trim() !== '');
   const numLines = lines.length;
-  // Use precomputed blockH/startY/endY from JSON if available (set by wevideo_to_json.py)
-  // Otherwise compute from line count × lineHeight
   const blockH   = (item as any).scrollBlockH ?? (numLines * lineH);
   const startY   = (item as any).scrollStartY ?? (kb.startTop + blockH / 2 - CH / 2);
   const endY     = (item as any).scrollEndY   ?? (kb.endTop   + blockH / 2 - CH / 2);
   const finalX = item.position.x;
-
-  // Transition on X only (crossFade on opacity)
   const initOp = item.transition?.type === 'crossFade' ? 0
                : (item.opacityKeyframes?.[0]?.value ?? item.opacity ?? 1);
   const initX = item.transition?.type === 'crossFade'
@@ -299,8 +251,6 @@ function* runScrollText(view: any, item: TextItem) {
     : (item.transition ? transitionInitPos(finalX, startY, item.transition)[0] : finalX);
 
   if (item.startTime > 0) yield* waitFor(item.startTime);
-
-  // Container Layout that holds ALL lines — we animate THIS container's Y
   const containerRef = createRef<Layout>();
 
   yield view.add(
@@ -313,9 +263,6 @@ function* runScrollText(view: any, item: TextItem) {
       layout={false}
     >
       {lines.map((lineText, i) => {
-        // Each line positioned relative to container centre
-        // Container centre = blockH/2 from top
-        // Line i centre Y within container = -(blockH/2) + lineH/2 + i*lineH
         const lineY = -(blockH / 2) + lineH / 2 + i * lineH;
         return (
           <Txt
@@ -336,11 +283,9 @@ function* runScrollText(view: any, item: TextItem) {
 
   const tasks: Generator[] = [];
 
-  // Opacity keyframes on container
   if (item.opacityKeyframes?.length)
     tasks.push(animateOpacity(containerRef, item.opacityKeyframes));
 
-  // Transition
   if (item.transition) {
     const t = item.transition;
     if (t.type === 'crossFade') {
@@ -356,7 +301,6 @@ function* runScrollText(view: any, item: TextItem) {
     }
   }
 
-  // SCROLL: animate Y from startY → endY (independent of X)
   tasks.push((function* () {
     yield* containerRef().y(endY, item.duration, linear);
   })());
@@ -365,9 +309,6 @@ function* runScrollText(view: any, item: TextItem) {
   containerRef().remove();
 }
 
-/* ─────────────────────────────────────────────
-   RECT
-───────────────────────────────────────────── */
 function* runRect(view: any, item: RectItem) {
   const ref    = createRef<Rect>();
   const finalX = item.position.x;
@@ -400,9 +341,6 @@ function* runRect(view: any, item: RectItem) {
   ref().remove();
 }
 
-/* ─────────────────────────────────────────────
-   SCENE
-───────────────────────────────────────────── */
 const scene = makeScene2D('scene', function* (view) {
   if (config.settings.background) {
     yield view.add(
@@ -428,9 +366,6 @@ const scene = makeScene2D('scene', function* (view) {
   yield* all(...runners);
 });
 
-/* ─────────────────────────────────────────────
-   EXPORT
-───────────────────────────────────────────── */
 export default makeProject({
   scenes: [scene],
   settings: { shared: { size: config.settings.size } },
