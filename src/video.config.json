@@ -43,6 +43,7 @@
     {
       "id": "title-month",
       "type": "text",
+      "textAlign": "left",
       "text": "September",
       "fontSize": 60,
       "color": "#ffffff",
@@ -61,6 +62,7 @@
     {
       "id": "title-sub",
       "type": "text",
+      "textAlign": "left",
       "text": "Birthdays",
       "fontSize": 60,
       "color": "#ffd700",
@@ -79,6 +81,7 @@
     {
       "id": "scroll-text",
       "type": "scroll-text",
+      "textAlign": "left",
       "start": 3,
       "duration": 17,
       "fontSize": 48,

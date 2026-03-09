@@ -33,6 +33,7 @@ function* runLayer(view: any, item: any, refs: any) {
   yield* waitFor(item.start ?? 0);
 
   const pos = item.position ?? { x: 0.5, y: 0.5 };
+  const textAlign: 'left' | 'center' | 'right' = item.textAlign ?? 'center';
 
   /* ----------------------------------------------------------------
      VIDEO
@@ -222,7 +223,7 @@ function* runLayer(view: any, item: any, refs: any) {
           fill={item.color ?? 'white'}
           x={startX}
           y={ty}
-          textAlign={'center'}
+          textAlign={textAlign}
           opacity={0}
           zIndex={item.zIndex ?? 1}
         />
@@ -265,7 +266,7 @@ function* runLayer(view: any, item: any, refs: any) {
           fill={item.color ?? 'white'}
           x={tx}
           y={ty}
-          textAlign={'center'}
+          textAlign={textAlign}
           opacity={0}
           zIndex={item.zIndex ?? 1}
         />
@@ -302,7 +303,7 @@ function* runLayer(view: any, item: any, refs: any) {
           fill={item.color ?? 'white'}
           x={tx}
           y={ty}
-          textAlign={'center'}
+          textAlign={textAlign}
           zIndex={item.zIndex ?? 1}
           opacity={0}
         />
@@ -330,7 +331,7 @@ function* runLayer(view: any, item: any, refs: any) {
             fill={item.color ?? 'white'}
             x={realW / 2}
             y={0}
-            textAlign={'center'}
+            textAlign={textAlign}
           />
         </Rect>
       );
@@ -400,7 +401,7 @@ function* runLayer(view: any, item: any, refs: any) {
             text={line === '' ? ' ' : line}
             fontSize={fontSize}
             fill={line === '' ? '#00000000' : color}
-            textAlign={'center'}
+            textAlign={item.textAlign ?? 'center'}
             width={areaW}
             x={0}
             y={initYs[i]}
