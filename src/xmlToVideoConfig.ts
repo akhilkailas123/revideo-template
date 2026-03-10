@@ -22,10 +22,10 @@
  *    → use the visible text directly
  *
  *  Placeholder text  (e.g. {{September}})
- *    → extract the value inside {{…}} → "September"
+ *    → keep the full {{…}} token so the config shows {{September}}
  *
  *  Scroll-text lines  (each <div> in a kenBurns text)
- *    → if the line is a {{…}} placeholder  → "" (empty slot for user to fill)
+ *    → if the line is a {{…}} placeholder  → "{{Month/Day - Name}}" (keep placeholder)
  *    → if the line has real text           → use the text
  *    → blank/empty <div>                  → "" (spacer)
  *
@@ -36,7 +36,14 @@
  *    Reversed → index 0 = background = zIndex 0.
  *
  *  Timing  (all XML values in milliseconds, ÷1000 for seconds)
- *    begin → start,  duration → duration
+ *    Transition timing:
+ *      start    = transition.begin / 1000   (when the layer becomes visible / animation begins)
+ *      duration = text/image.duration / 1000  (how long the element stays on screen)
+ *    Animation timing:
+ *      wipeRight.time / fadeIn.time / slideInLeft.time = transition.duration / 1000
+ *    Video timing:
+ *      start    = video.begin / 1000  (no transition offset — video plays from its own begin)
+ *      duration = video.duration / 1000
  *
  *  Position  (1920×1080 canvas, pixel → normalised centre)
  *    position.x = (left + width/2)  / 1920
@@ -57,25 +64,42 @@
  *    slideLeft + text   → animation:  { slideInLeft: { time:N } }
  *    swipeLeft + video  → transition: { type:"swipe-left-blur", duration:N }
  *
+ *  Text CSS properties extracted from inline styles and emitted to JSON:
+ *    fontSize, fontFamily, lineHeight (px), letterSpacing, color
+ *    skewX / skewY from XML rotation attribute (rotation → skewY approximation)
+ *
  *  scroll-text (kenBurns detected)
  *    scrollArea.x      = (kenBurns.startLeft + textNode.width/2) / 1920
  *    scrollArea.y      = 0.5
  *    scrollArea.width  = textNode.width / 1920
  *    scrollArea.height = 0.8
  *    fontSize          = font-size:Npx  from inline style
- *    lineHeight        = fontSize × lineHeightPercent/100
+ *    lineHeight        = line-height:N% from inline style → fontSize × N/100
+ *                        OR line-height:Npx              → N directly
  *    color             = rgb(r,g,b) → #hex  from inline style
- *    lines[]           = one entry per <div>/<br>:
- *                          {{placeholder}} → ""   (empty slot)
+ *    lines[]           = one entry per <div> in the HTML content:
+ *                          {{placeholder}} → "{{placeholder}}" (keep for user to fill)
  *                          real text       → text value
+ *                          empty <div>     → "" (spacer, NOT trimmed from end)
+ *
+ *  Fullscreen mask/overlay images (w ≥ 90%, h ≥ 90% of canvas):
+ *    Included in timeline with position {x:0.5, y:0.5} and no animation.
+ *    If you want to skip mask layers entirely, set SKIP_FULLSCREEN_IMAGES=true below.
  */
 
 import * as fs   from "fs";
 import * as path from "path";
-import { XMLParser } from "fast-xml-parser";
+
+// ─── Config ───────────────────────────────────────────────────────────────────
 
 const W = 1920;
 const H = 1080;
+
+/**
+ * Set to true to omit fullscreen images (mask/overlay layers) from output.
+ * Default: false (include them at zIndex position, no animation).
+ */
+const SKIP_FULLSCREEN_IMAGES = true;
 
 // ─── Fix 1 & 3: WeVideo double-quoted attributes ──────────────────────────────
 /** Replace =""value"" with ="value" iteratively until stable */
@@ -87,8 +111,10 @@ function fixDoubleQuotes(s: string): string {
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
 
+/** Convert milliseconds to seconds, rounded to 2 decimal places */
 const sec = (v: any): number => Math.round(Number(v ?? 0) / 10) / 100;
-const r4  = (n: number)       => parseFloat(n.toFixed(4));
+
+const r4  = (n: number) => parseFloat(n.toFixed(4));
 
 const normPos = (l: number, t: number, w: number, h: number) => ({
   x: r4((l + w / 2) / W),
@@ -111,8 +137,47 @@ function rgb2hex(v: string): string {
   return "#" + [m[1], m[2], m[3]].map(n => parseInt(n).toString(16).padStart(2, "0")).join("");
 }
 
-const getFontSize     = (h: string) => { const m = h.match(/font-size\s*:\s*([\d.]+)\s*px/i); return m ? Math.round(Number(m[1])) : 60; };
-const getLineHeightMult = (h: string) => { const m = h.match(/line-height\s*:\s*([\d.]+)%/i);  return m ? Number(m[1]) / 100 : 1.6; };
+/** Extract font-size in px from inline style, return integer */
+const getFontSize = (h: string): number => {
+  const m = h.match(/font-size\s*:\s*([\d.]+)\s*px/i);
+  return m ? Math.round(Number(m[1])) : 60;
+};
+
+/**
+ * Extract line-height from inline style.
+ *
+ * In video.config.json, lineHeight is the raw number passed directly to Revideo's
+ * lineHeight prop (which treats it as pixels). WeVideo's % values are intended as
+ * an absolute pixel line-height, not a multiplier of fontSize. So:
+ *
+ *   line-height: 105%  → 105   (store the raw percentage NUMBER, not fontSize × 1.05)
+ *   line-height: 200px → 200   (used directly)
+ *   line-height: 300%  → 300   (e.g. scroll-text uses 300 as absolute spacing)
+ *   (no unit)          → value (treat as px directly)
+ *
+ * Falls back to Math.round(fontSize * 1.6) if not found.
+ */
+const getLineHeight = (h: string, fontSize: number): number => {
+  const m = h.match(/line-height\s*:\s*([\d.]+)\s*(%|px)?/i);
+  if (!m) return Math.round(fontSize * 1.6);
+  const val  = Number(m[1]);
+  // For both % and px units (and unitless), store the raw numeric value.
+  // WeVideo treats line-height:105% as 105px in their renderer, which maps
+  // directly to Revideo's lineHeight prop.
+  return Math.round(val);
+};
+
+/** Extract letter-spacing in px, return integer (0 if not found) */
+const getLetterSpacing = (h: string): number => {
+  const m = h.match(/letter-spacing\s*:\s*(-?[\d.]+)\s*px/i);
+  return m ? Math.round(Number(m[1])) : 0;
+};
+
+/** Extract font-family, return string or undefined */
+const getFontFamily = (h: string): string | undefined => {
+  const m = h.match(/font-family\s*:\s*([^;\"'<>]+)/i);
+  return m ? m[1].trim() : undefined;
+};
 
 /**
  * Decode HTML entities + fix inner double-quoted styles.
@@ -126,34 +191,24 @@ function prepHtml(raw: string): string {
 }
 
 /**
- * Extract the display text from a plain/animated text node:
- *  - Real text            → use as-is
- *  - {{September}}        → "September"   (extract placeholder value)
- *  - {{Month/Day - Name}} → ""            (generic slot descriptor = empty)
+ * Extract the display text from a plain/animated text node.
+ * Preserves {{…}} placeholders as-is (e.g. {{September}} → "{{September}}").
+ * Returns empty string if nothing meaningful found.
  */
 function htmlToText(raw: string): string {
   const html     = prepHtml(raw);
   const stripped = html.replace(/<[^>]+>/g, "").trim();
-
-  // Contains only a {{…}} placeholder
-  const phM = stripped.match(/^\s*\{\{([^}]+)\}\}\s*$/);
-  if (phM) {
-    const inner = phM[1].trim();
-    // Generic field descriptors like "Month/Day - Name" → treat as empty
-    if (/[\/\-]/.test(inner)) return "";
-    return inner;
-  }
-
-  // Mixed or plain text — strip any remaining {{}} markers
-  return stripped.replace(/\{\{[^}]*\}\}/g, "").trim();
+  return stripped;
 }
 
 /**
  * For scroll-text: split HTML into one line per <div>/<br>.
- *  - Real text line         → the text string
- *  - {{placeholder}} line   → "" (empty slot for user to fill in)
- *  - Empty / blank line     → "" (spacer)
- * Trailing empty lines are removed.
+ * - Real text line       → the text string
+ * - {{placeholder}} line → "{{placeholder}}" (kept for user to fill in)
+ * - Empty / blank line   → "" (spacer)
+ *
+ * NOTE: Trailing empty lines are NOT trimmed for scroll-text — the full
+ * list of lines drives the scroll height and must match the original count.
  */
 function htmlToLines(raw: string): string[] {
   const html   = prepHtml(raw);
@@ -161,18 +216,12 @@ function htmlToLines(raw: string): string[] {
 
   for (const block of html.split(/<\/div>|<br\s*\/?>/gi)) {
     const stripped = block.replace(/<[^>]+>/g, "").trim();
-
-    // Any {{…}} placeholder in this line → empty slot
-    if (/\{\{[^}]+\}\}/.test(stripped)) {
-      lines.push("");
-      continue;
-    }
-
-    lines.push(stripped);
+    lines.push(stripped);   // keep as-is: placeholder, text, or ""
   }
 
-  // Drop trailing empty strings
-  while (lines.length && lines[lines.length - 1] === "") lines.pop();
+  // Remove a single trailing empty entry that comes from the final </div> split
+  if (lines.length && lines[lines.length - 1] === "") lines.pop();
+
   return lines;
 }
 
@@ -194,7 +243,7 @@ function parseAttrs(str: string): Record<string, string> {
 
 // ─── Transition helpers ───────────────────────────────────────────────────────
 
-interface Tr { type: string; dur: number; }
+interface Tr { type: string; dur: number; begin: number; }
 
 const videoTr = (tr: Tr | null) => {
   if (!tr) return null;
@@ -214,7 +263,7 @@ const textAnim = (tr: Tr | null) => {
   return null;
 };
 
-// ─── Layer parser ─────────────────────────────────────────────────────────────
+// ─── XML layer parser ─────────────────────────────────────────────────────────
 
 function parseLayers(xml: string) {
   // Fix 2: layer(?!s) avoids matching the <layers> container tag
@@ -222,9 +271,12 @@ function parseLayers(xml: string) {
     const attrs   = parseAttrs(m[1]);
     const content = m[2];
 
+    // Layer-level <transition> tag (self-closing)
     const trM  = content.match(/<transition([^>]*)\/>/);
     const trA  = trM ? parseAttrs(trM[1]) : null;
-    const transition: Tr | null = trA ? { type: String(trA.type ?? ""), dur: sec(trA.duration) } : null;
+    const transition: Tr | null = trA
+      ? { type: String(trA.type ?? ""), dur: sec(trA.duration), begin: sec(trA.begin ?? 0) }
+      : null;
 
     const videos = [...content.matchAll(/<video([^>]*)>/g)].map(v => parseAttrs(v[1]));
     const images = [...content.matchAll(/<image([^>]*)>/g)].map(v => parseAttrs(v[1]));
@@ -232,6 +284,7 @@ function parseLayers(xml: string) {
     const texts = [...content.matchAll(/<text([^>]*)>([\s\S]*?)<\/text>/g)].map(v => {
       const ta  = parseAttrs(v[1]);
       const tc  = v[2];
+      // kenBurns filter is a self-closing <filter> tag INSIDE the <text> content
       const kbM = tc.match(/<filter([^>]*)\/>/);
       const fa  = kbM ? parseAttrs(kbM[1]) : null;
       return { attrs: ta, content: tc, kenBurns: fa?.type === "kenBurns" ? fa : null };
@@ -268,7 +321,7 @@ export function convertXml(rawXml: string, opts: ConverterOptions = {}): object 
     const id    = slug(title);
     const tr    = layer.transition;
 
-    // ── VIDEO ──────────────────────────────────────────────────────────────
+    // ── VIDEO ──────────────────────────────────────────────────────────────────
     for (const v of layer.videos) {
       const vw = Number(v.width ?? W), vh = Number(v.height ?? H);
       const vl = Number(v.left  ?? 0), vt = Number(v.top   ?? 0);
@@ -277,37 +330,52 @@ export function convertXml(rawXml: string, opts: ConverterOptions = {}): object 
         id:       uid(id),
         type:     "video",
         src:      v.src ?? "",
+        // Video start comes directly from video.begin (no transition offset)
         start:    sec(v.begin),
         duration: sec(v.duration),
         zIndex,
       };
-      if (!isFullscreen(vw, vh)) { item.position = normPos(vl, vt, vw, vh); item.width = vw; }
+      if (!isFullscreen(vw, vh)) {
+        item.position = normPos(vl, vt, vw, vh);
+        item.width    = vw;
+      }
       const t = videoTr(tr);
       if (t) item.transition = t;
       timeline.push(item);
     }
 
-    // ── IMAGE ──────────────────────────────────────────────────────────────
+    // ── IMAGE ──────────────────────────────────────────────────────────────────
     for (const img of layer.images) {
       const iw = Number(img.width ?? 400), ih = Number(img.height ?? iw);
       const il = Number(img.left  ?? 0),   it = Number(img.top    ?? 0);
+
+      const fullscreen = isFullscreen(iw, ih);
+
+      // Skip fullscreen mask/overlay images if configured to do so
+      if (fullscreen && SKIP_FULLSCREEN_IMAGES) continue;
 
       const item: any = {
         id:       uid(id),
         type:     "image",
         src:      img.src ?? "",
-        start:    sec(img.begin),
+        // Image start: use transition.begin if there is a transition, else image.begin
+        start:    tr ? tr.begin : sec(img.begin),
         duration: sec(img.duration),
         zIndex,
       };
-      if (isFullscreen(iw, ih)) { item.width = W;  item.position = { x: 0.5, y: 0.5 }; }
-      else                      { item.width = iw; item.position = normPos(il, it, iw, ih); }
+      if (fullscreen) {
+        item.width    = W;
+        item.position = { x: 0.5, y: 0.5 };
+      } else {
+        item.width    = iw;
+        item.position = normPos(il, it, iw, ih);
+      }
       const a = imageAnim(tr);
       if (a) item.animation = a;
       timeline.push(item);
     }
 
-    // ── TEXT ───────────────────────────────────────────────────────────────
+    // ── TEXT ───────────────────────────────────────────────────────────────────
     for (const t of layer.texts) {
       const { attrs: ta, content: raw, kenBurns: kb } = t;
       const tw = Number(ta.width  ?? 400), tl = Number(ta.left ?? 0);
@@ -316,26 +384,42 @@ export function convertXml(rawXml: string, opts: ConverterOptions = {}): object 
       // Decode + fix inline styles once, reuse for CSS reading
       const html = prepHtml(raw);
 
-      // ── scroll-text (kenBurns detected) ──────────────────────────────────
+      // Extract shared CSS properties from inline styles
+      const fs          = getFontSize(html);
+      const lh          = getLineHeight(html, fs);
+      const ls          = getLetterSpacing(html);
+      const fontFamily  = getFontFamily(html);
+      const colRaw      = cssVal(html, "color");
+      const color       = colRaw ? rgb2hex(colRaw) : "#ffffff";
+      const taRaw       = cssVal(html, "text-align") ?? "left";
+      const textAlign   = (["left", "right", "center"].includes(taRaw) ? taRaw : "left") as "left" | "right" | "center";
+
+      // XML rotation attribute → skewY (WeVideo uses rotation for italic-like skew)
+      const rotationDeg = Number(ta.rotation ?? 0);
+      // rotation=358 means -2 degrees (360 - 358 = 2, so skewY = -2)
+      const skewY = rotationDeg > 180
+        ? -(360 - rotationDeg)
+        : rotationDeg;
+
+      // ── scroll-text (kenBurns filter detected inside <text>) ────────────────
       if (kb) {
+        // startLeft from kenBurns filter tells us where the scroll column begins
         const startLeft = Number(kb.startLeft ?? tl);
         const colW      = tw;
-
-        const fs        = getFontSize(html);
-        const lh        = Math.round(fs * getLineHeightMult(html));
-        const colRaw    = cssVal(html, "color");
-        const color     = colRaw ? rgb2hex(colRaw) : "#ffffff";
-        const taRaw     = cssVal(html, "text-align") ?? "center";
-        const textAlign = (["left", "right", "center"].includes(taRaw) ? taRaw : "center") as "left" | "right" | "center";
 
         timeline.push({
           id:         uid(id),
           type:       "scroll-text",
           textAlign,
+          // scroll-text start: use text element's own begin time.
+          // kenBurns scroll animation is independent of the layer transition,
+          // so text.begin (not transition.begin) is the correct anchor.
           start:      sec(ta.begin),
           duration:   sec(ta.duration),
           fontSize:   fs,
+          fontFamily,
           lineHeight: lh,
+          letterSpacing: ls,
           color,
           zIndex,
           scrollArea: {
@@ -344,20 +428,27 @@ export function convertXml(rawXml: string, opts: ConverterOptions = {}): object 
             width:  r4(colW / W),
             height: 0.8,
           },
-          lines: htmlToLines(raw),   // {{placeholders}} → "" empty slots
+          // For scroll-text, preserve all lines including placeholders
+          lines: htmlToLines(raw),
         });
         continue;
       }
 
-      // ── plain / animated text ─────────────────────────────────────────────
-      const text = htmlToText(raw);   // {{September}} → "September"
+      // ── plain / animated text ────────────────────────────────────────────────
+      const text = htmlToText(raw);
       if (!text) continue;
 
-      const fs       = getFontSize(html);
-      const colRaw   = cssVal(html, "color");
-      const color    = colRaw ? rgb2hex(colRaw) : "#ffffff";
-      const taRaw    = cssVal(html, "text-align") ?? "left";
-      const textAlign = (["left", "right", "center"].includes(taRaw) ? taRaw : "left") as "left" | "right" | "center";
+      // ── KEY TIMING FIX ────────────────────────────────────────────────────────
+      // In WeVideo XML:
+      //   - transition.begin = when the animation STARTS (e.g. 1000ms = 1s)
+      //   - text.begin       = when the text element appears AFTER the transition
+      //                        (transition.begin + transition.duration)
+      // In video.config.json:
+      //   - item.start       = when the animation begins = transition.begin / 1000
+      //   - item.duration    = total on-screen time     = text.duration / 1000
+      //   - animation.time   = how long the transition takes = transition.duration / 1000
+      //
+      // So: use tr.begin for start (not ta.begin), and tr.dur for animation time.
 
       const item: any = {
         id:        uid(id),
@@ -365,19 +456,27 @@ export function convertXml(rawXml: string, opts: ConverterOptions = {}): object 
         textAlign,
         text,
         fontSize:  fs,
+        fontFamily,
+        lineHeight: lh,
+        letterSpacing: ls,
         color,
-        start:     sec(ta.begin),
+        // start = transition.begin (when animation kicks off), or text.begin if no transition
+        start:     tr ? tr.begin : sec(ta.begin),
         duration:  sec(ta.duration),
         position:  normPos(tl, tt, tw, th),
         zIndex,
       };
+
+      // skewY from rotation attribute (only emit if non-zero)
+      if (skewY !== 0) item.skewY = skewY;
+
       const a = textAnim(tr);
       if (a) item.animation = a;
       timeline.push(item);
     }
   });
 
-  // ── Inject optional audio track ───────────────────────────────────────────
+  // ── Inject optional audio track ─────────────────────────────────────────────
   if (opts.audioSrc) {
     const totalDur = timeline.reduce(
       (acc, i) => Math.max(acc, (i.start ?? 0) + (i.duration ?? 0)), 0

@@ -153,3 +153,11 @@ docker run -it --rm revideo-app bash
 ```
 
 This allows you to debug, inspect files, or run commands directly inside the container.
+
+# 8. Convert Xml to Json 
+
+```bash 
+npm install
+
+npm run convert .\sample\sample.xml .\sample\out1.json
+```
