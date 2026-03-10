@@ -154,8 +154,8 @@ function* runLayer(view: any, item: any, refs: any) {
     const halfH = imgHeight / 2;
     const rawX  = toSceneX(pos.x);
     const rawY  = toSceneY(pos.y);
-    const clampedX = Math.max(-WIDTH  / 2 + halfW, Math.min(WIDTH  / 2 - halfW, rawX));
-    const clampedY = Math.max(-HEIGHT / 2 + halfH, Math.min(HEIGHT / 2 - halfH, rawY));
+    const clampedX = rawX;
+    const clampedY = rawY;
     const startOpacity = item.animation?.fadeIn ? 0 : 1;
 
     view.add(

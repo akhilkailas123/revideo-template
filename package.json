@@ -7,13 +7,14 @@
     "render": "tsc && node dist/render.js"
   },
   "dependencies": {
-    "@revideo/core": "0.10.4",
     "@revideo/2d": "0.10.4",
-    "@revideo/renderer": "0.10.4"
+    "@revideo/core": "0.10.4",
+    "@revideo/renderer": "0.10.4",
+    "serve": "^14.2.6"
   },
   "devDependencies": {
-    "@revideo/ui": "0.10.4",
     "@revideo/cli": "0.10.4",
+    "@revideo/ui": "0.10.4",
     "typescript": "5.5.4",
     "vite": "^4.5"
   }
