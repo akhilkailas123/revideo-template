@@ -10,7 +10,7 @@
     {
       "id": "background-video",
       "type": "video",
-      "src": "http://localhost:3001/202.mp4",
+      "src": "http://localhost:3001/202-og.mp4",
       "start": 0,
       "duration": 20,
       "zIndex": 0
@@ -37,13 +37,15 @@
       "type": "text",
       "textAlign": "left",
       "text": "{{September}}",
-      "fontSize": 52,
+      "fontSize": 58,
       "fontFamily": "Oswald",
       "lineHeight":105,
       "letterSpacing":-1,
-      "color": "#ffffFF",
+      "color": "#ffffff",
       "start": 1.50,
       "duration": 18,
+      "skewX": 0,
+      "skewY": 0,
       "position": {
         "x": 0.290,
         "y": 0.300
@@ -63,12 +65,14 @@
       "fontFamily": "Playball",
       "lineHeight":105,
       "letterSpacing":-1,
-      "color": "#ffffff",
+      "color": "#ffff11",
       "start": 1.52,
       "duration": 17,
+      "skewX": 0,
+      "skewY": -2,
       "position": {
-        "x": 0.290,
-        "y": 0.382
+        "x": 0.289,
+        "y": 0.380
       },
       "animation": {
         "wipeRight": {

@@ -22,5 +22,5 @@ services:
       - .:/app
       - /app/node_modules
       - ./output:/app/output
-    command: sh -c "npx serve template-videos -l 3001 --cors & npm start"
+    command: sh -c "npx serve template-data -l 3001 --cors & npm start"
     shm_size: "2gb"
