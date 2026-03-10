@@ -16,6 +16,7 @@ import {
   Rect,
 } from '@revideo/2d';
 import config from './video.config.json';
+import './global.css';
 
 const WIDTH  = config.settings.size.x;
 const HEIGHT = config.settings.size.y;
@@ -34,6 +35,7 @@ function* runLayer(view: any, item: any, refs: any) {
 
   const pos = item.position ?? { x: 0.5, y: 0.5 };
   const textAlign: 'left' | 'center' | 'right' = item.textAlign ?? 'center';
+  const fontFamily: string | undefined = item.fontFamily ?? undefined;
 
   /* ----------------------------------------------------------------
      VIDEO
@@ -226,6 +228,7 @@ function* runLayer(view: any, item: any, refs: any) {
           textAlign={textAlign}
           opacity={0}
           zIndex={item.zIndex ?? 1}
+          fontFamily={fontFamily}
         />
       );
 
@@ -269,6 +272,7 @@ function* runLayer(view: any, item: any, refs: any) {
           textAlign={textAlign}
           opacity={0}
           zIndex={item.zIndex ?? 1}
+          fontFamily={fontFamily}
         />
       );
 
@@ -306,6 +310,7 @@ function* runLayer(view: any, item: any, refs: any) {
           textAlign={textAlign}
           zIndex={item.zIndex ?? 1}
           opacity={0}
+          fontFamily={fontFamily}
         />
       );
 
@@ -332,6 +337,7 @@ function* runLayer(view: any, item: any, refs: any) {
             x={realW / 2}
             y={0}
             textAlign={textAlign}
+            fontFamily={fontFamily}
           />
         </Rect>
       );
@@ -361,6 +367,7 @@ function* runLayer(view: any, item: any, refs: any) {
           x={toSceneX(pos.x)}
           y={toSceneY(pos.y)}
           zIndex={item.zIndex ?? 1}
+          fontFamily={fontFamily}
         />
       );
     }
@@ -400,6 +407,7 @@ function* runLayer(view: any, item: any, refs: any) {
             key={i}
             text={line === '' ? ' ' : line}
             fontSize={fontSize}
+            fontFamily={fontFamily}
             fill={line === '' ? '#00000000' : color}
             textAlign={item.textAlign ?? 'center'}
             width={areaW}

@@ -38,6 +38,7 @@
       "textAlign": "left",
       "text": "{{September}}",
       "fontSize": 60,
+      "fontFamily": "Oswald",
       "color": "#ffffff",
       "start": 2,
       "duration": 18,
@@ -57,6 +58,7 @@
       "textAlign": "left",
       "text": "Birthdays",
       "fontSize": 60,
+      "fontFamily": "Playball",
       "color": "#ffffff",
       "start": 2,
       "duration": 17,
@@ -77,6 +79,7 @@
       "start": 3,
       "duration": 17,
       "fontSize": 48,
+      "fontFamily": "Roboto",
       "lineHeight": 90,
       "color": "#ffffff",
       "scrollArea": {
