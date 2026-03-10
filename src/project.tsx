@@ -212,6 +212,8 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
+      const lineHeight = item.lineHeight ?? 300;
+      const letterSpacing = item.letterSpacing ?? 0;
       const slideTime = slideInLeft.time ?? 0.2;
 
       // Start position: right edge of screen + half text width offset
@@ -229,6 +231,8 @@ function* runLayer(view: any, item: any, refs: any) {
           opacity={0}
           zIndex={item.zIndex ?? 1}
           fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
         />
       );
 
@@ -258,6 +262,8 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
+      const lineHeight = item.lineHeight ?? 300;
+      const letterSpacing = item.letterSpacing ?? 0;
       const fadeTime = fadeIn.time ?? 0.3;
 
       // Add node with opacity 0 at exact config position
@@ -273,6 +279,8 @@ function* runLayer(view: any, item: any, refs: any) {
           opacity={0}
           zIndex={item.zIndex ?? 1}
           fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
         />
       );
 
@@ -298,6 +306,8 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx      = toSceneX(pos.x);
       const ty      = toSceneY(pos.y);
       const fSize   = item.fontSize ?? 80;
+      const lineHeight = item.lineHeight ?? 300;
+      const letterSpacing = item.letterSpacing ?? 0;
 
       view.add(
         <Txt
@@ -311,6 +321,8 @@ function* runLayer(view: any, item: any, refs: any) {
           zIndex={item.zIndex ?? 1}
           opacity={0}
           fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
         />
       );
 
@@ -338,6 +350,8 @@ function* runLayer(view: any, item: any, refs: any) {
             y={0}
             textAlign={textAlign}
             fontFamily={fontFamily}
+            lineHeight={lineHeight}
+            letterSpacing={letterSpacing}
           />
         </Rect>
       );
@@ -368,6 +382,8 @@ function* runLayer(view: any, item: any, refs: any) {
           y={toSceneY(pos.y)}
           zIndex={item.zIndex ?? 1}
           fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
         />
       );
     }
@@ -408,6 +424,7 @@ function* runLayer(view: any, item: any, refs: any) {
             text={line === '' ? ' ' : line}
             fontSize={fontSize}
             fontFamily={fontFamily}
+            lineHeight={lineHeight}
             fill={line === '' ? '#00000000' : color}
             textAlign={item.textAlign ?? 'center'}
             width={areaW}
