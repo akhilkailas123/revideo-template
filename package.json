@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "revideo editor --projectFile ./src/project.tsx",
-    "render": "tsc && node dist/render.js"
+    "render": "tsc && node dist/render.js",
+    "convert": "ts-node src/xmlToVideoConfig.ts"
   },
   "dependencies": {
     "@revideo/2d": "0.10.4",
@@ -15,7 +16,8 @@
   "devDependencies": {
     "@revideo/cli": "0.10.4",
     "@revideo/ui": "0.10.4",
-    "typescript": "5.5.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4",
     "vite": "^4.5"
   }
 }
