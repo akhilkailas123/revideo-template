@@ -17,9 +17,10 @@ services:
     init: true
     ports:
       - "9000:9000"
+      - "3001:3001"
     volumes:
       - .:/app
       - /app/node_modules
       - ./output:/app/output
-    command: npm start
+    command: sh -c "npx serve template-data -l 3001 --cors & npm start"
     shm_size: "2gb"

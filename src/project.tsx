@@ -16,6 +16,7 @@ import {
   Rect,
 } from '@revideo/2d';
 import config from './video.config.json';
+import './global.css';
 
 const WIDTH  = config.settings.size.x;
 const HEIGHT = config.settings.size.y;
@@ -33,6 +34,8 @@ function* runLayer(view: any, item: any, refs: any) {
   yield* waitFor(item.start ?? 0);
 
   const pos = item.position ?? { x: 0.5, y: 0.5 };
+  const textAlign: 'left' | 'center' | 'right' = item.textAlign ?? 'center';
+  const fontFamily: string | undefined = item.fontFamily ?? undefined;
 
   /* ----------------------------------------------------------------
      VIDEO
@@ -153,8 +156,8 @@ function* runLayer(view: any, item: any, refs: any) {
     const halfH = imgHeight / 2;
     const rawX  = toSceneX(pos.x);
     const rawY  = toSceneY(pos.y);
-    const clampedX = Math.max(-WIDTH  / 2 + halfW, Math.min(WIDTH  / 2 - halfW, rawX));
-    const clampedY = Math.max(-HEIGHT / 2 + halfH, Math.min(HEIGHT / 2 - halfH, rawY));
+    const clampedX = rawX;
+    const clampedY = rawY;
     const startOpacity = item.animation?.fadeIn ? 0 : 1;
 
     view.add(
@@ -209,6 +212,10 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
+      const lineHeight = item.lineHeight ?? 300;
+      const letterSpacing = item.letterSpacing ?? 0;
+      const skewX = item.skewX ?? 0;
+      const skewY = item.skewY ?? 0;
       const slideTime = slideInLeft.time ?? 0.2;
 
       // Start position: right edge of screen + half text width offset
@@ -222,9 +229,14 @@ function* runLayer(view: any, item: any, refs: any) {
           fill={item.color ?? 'white'}
           x={startX}
           y={ty}
-          textAlign={'center'}
+          textAlign={textAlign}
           opacity={0}
           zIndex={item.zIndex ?? 1}
+          fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
+          skewX={skewX}
+          skewY={skewY}
         />
       );
 
@@ -254,6 +266,10 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
+      const lineHeight = item.lineHeight ?? 300;
+      const letterSpacing = item.letterSpacing ?? 0;
+      const skewX = item.skewX ?? 0;
+      const skewY = item.skewY ?? 0;
       const fadeTime = fadeIn.time ?? 0.3;
 
       // Add node with opacity 0 at exact config position
@@ -265,9 +281,14 @@ function* runLayer(view: any, item: any, refs: any) {
           fill={item.color ?? 'white'}
           x={tx}
           y={ty}
-          textAlign={'center'}
+          textAlign={textAlign}
           opacity={0}
           zIndex={item.zIndex ?? 1}
+          fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
+          skewX={skewX}
+          skewY={skewY}
         />
       );
 
@@ -293,6 +314,10 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx      = toSceneX(pos.x);
       const ty      = toSceneY(pos.y);
       const fSize   = item.fontSize ?? 80;
+      const lineHeight = item.lineHeight ?? 300;
+      const letterSpacing = item.letterSpacing ?? 0;
+      const skewX = item.skewX ?? 0;
+      const skewY = item.skewY ?? 0;
 
       view.add(
         <Txt
@@ -302,9 +327,14 @@ function* runLayer(view: any, item: any, refs: any) {
           fill={item.color ?? 'white'}
           x={tx}
           y={ty}
-          textAlign={'center'}
+          textAlign={textAlign}
           zIndex={item.zIndex ?? 1}
           opacity={0}
+          fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
+          skewX={skewX}
+          skewY={skewY}
         />
       );
 
@@ -330,7 +360,12 @@ function* runLayer(view: any, item: any, refs: any) {
             fill={item.color ?? 'white'}
             x={realW / 2}
             y={0}
-            textAlign={'center'}
+            textAlign={textAlign}
+            fontFamily={fontFamily}
+            lineHeight={lineHeight}
+            letterSpacing={letterSpacing}
+            skewX={skewX}
+            skewY={skewY}
           />
         </Rect>
       );
@@ -360,6 +395,11 @@ function* runLayer(view: any, item: any, refs: any) {
           x={toSceneX(pos.x)}
           y={toSceneY(pos.y)}
           zIndex={item.zIndex ?? 1}
+          fontFamily={fontFamily}
+          lineHeight={lineHeight}
+          letterSpacing={letterSpacing}
+          skewX={skewX}
+          skewY={skewY}
         />
       );
     }
@@ -399,8 +439,10 @@ function* runLayer(view: any, item: any, refs: any) {
             key={i}
             text={line === '' ? ' ' : line}
             fontSize={fontSize}
+            fontFamily={fontFamily}
+            lineHeight={lineHeight}
             fill={line === '' ? '#00000000' : color}
-            textAlign={'center'}
+            textAlign={item.textAlign ?? 'center'}
             width={areaW}
             x={0}
             y={initYs[i]}
