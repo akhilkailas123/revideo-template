@@ -10,7 +10,7 @@
     {
       "id": "background-video",
       "type": "video",
-      "src": "http://localhost:3001/b3.mp4",
+      "src": "http://localhost:3001/202.mp4",
       "start": 0,
       "duration": 20,
       "zIndex": 0
@@ -81,12 +81,12 @@
       "type": "scroll-text",
       "textAlign": "left",
       "start": 1.15,
-      "duration": 17,
+      "duration": 100,
       "fontSize": 58,
       "fontFamily": "Roboto",
-      "lineHeight":300,
+      "lineHeight":200,
       "letterSpacing":0,
-      "color": "#ff69b4",
+      "color": "#ffffff",
       "scrollArea": {
         "x": 0.77,
         "y": 0.5,
