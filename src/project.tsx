@@ -203,6 +203,12 @@ function* runLayer(view: any, item: any, refs: any) {
     const slideInLeft = item.animation?.slideInLeft;
     const fadeIn      = item.animation?.fadeIn;
 
+    // Text wrap: use item.width (pixels) to constrain line length.
+    // textWrap defaults to true so long text breaks automatically.
+    // Set item.textWrap = false in config to disable.
+    const textWidth: number | undefined = item.width ?? undefined;
+    const textWrap: boolean | 'pre' | 'balance' = item.textWrap ?? true;
+
     /* ── SLIDE-IN-LEFT ─────────────────────────────────────────────────
      * Text slides from off-screen RIGHT to its final config x/y position.
      * Opacity goes from 0 → 1 simultaneously, reaching full opacity at end.
@@ -237,6 +243,8 @@ function* runLayer(view: any, item: any, refs: any) {
           letterSpacing={letterSpacing}
           skewX={skewX}
           skewY={skewY}
+          width={textWidth}
+          textWrap={textWrap}
         />
       );
 
@@ -289,6 +297,8 @@ function* runLayer(view: any, item: any, refs: any) {
           letterSpacing={letterSpacing}
           skewX={skewX}
           skewY={skewY}
+          width={textWidth}
+          textWrap={textWrap}
         />
       );
 
@@ -335,6 +345,8 @@ function* runLayer(view: any, item: any, refs: any) {
           letterSpacing={letterSpacing}
           skewX={skewX}
           skewY={skewY}
+          width={textWidth}
+          textWrap={textWrap}
         />
       );
 
@@ -366,6 +378,8 @@ function* runLayer(view: any, item: any, refs: any) {
             letterSpacing={letterSpacing}
             skewX={skewX}
             skewY={skewY}
+            width={textWidth}
+            textWrap={textWrap}
           />
         </Rect>
       );
@@ -400,6 +414,8 @@ function* runLayer(view: any, item: any, refs: any) {
           letterSpacing={letterSpacing}
           skewX={skewX}
           skewY={skewY}
+          width={textWidth}
+          textWrap={textWrap}
         />
       );
     }

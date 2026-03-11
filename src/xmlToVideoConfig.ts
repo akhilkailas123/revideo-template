@@ -158,12 +158,10 @@ const getFontSize = (h: string): number => {
  * Falls back to Math.round(fontSize * 1.6) if not found.
  */
 const getLineHeight = (h: string, fontSize: number): number => {
+  if (/line-height\s*:\s*normal/i.test(h)) return Math.round(fontSize * 1.2);
   const m = h.match(/line-height\s*:\s*([\d.]+)\s*(%|px)?/i);
   if (!m) return Math.round(fontSize * 1.6);
   const val  = Number(m[1]);
-  // For both % and px units (and unitless), store the raw numeric value.
-  // WeVideo treats line-height:105% as 105px in their renderer, which maps
-  // directly to Revideo's lineHeight prop.
   return Math.round(val);
 };
 
@@ -257,9 +255,10 @@ const imageAnim = (tr: Tr | null) =>
 
 const textAnim = (tr: Tr | null) => {
   if (!tr) return null;
-  if (tr.type === "wipeRight") return { wipeRight:   { time: tr.dur } };
-  if (tr.type === "slideLeft") return { slideInLeft: { time: tr.dur } };
-  if (tr.type === "crossFade") return { fadeIn:      { time: tr.dur } };
+  if (tr.type === "wipeRight")       return { wipeRight:   { time: tr.dur } };
+  if (tr.type === "slideLeft")       return { slideInLeft: { time: tr.dur } };
+  if (tr.type === "crossFade")       return { fadeIn:      { time: tr.dur } };
+  if (tr.type === "directionalWipe") return { fadeIn:      { time: tr.dur } };
   return null;
 };
 
@@ -464,6 +463,7 @@ export function convertXml(rawXml: string, opts: ConverterOptions = {}): object 
         start:     tr ? tr.begin : sec(ta.begin),
         duration:  sec(ta.duration),
         position:  normPos(tl, tt, tw, th),
+        width:     tw,   // pixel width from XML — used by project.tsx for textWrap
         zIndex,
       };
 
@@ -517,13 +517,13 @@ if (require.main === module) {
   const audioOffset = audioOffIdx !== -1 ? Number(args[audioOffIdx + 1]) : undefined;
 
   if (!fs.existsSync(xmlPath)) {
-    console.error(`❌  XML not found: ${xmlPath}`);
+    console.error(`XML not found: ${xmlPath}`);
     process.exit(1);
   }
 
   const result = convertXml(fs.readFileSync(xmlPath, "utf8"), { audioSrc, audioOffset });
   fs.mkdirSync(path.dirname(path.resolve(outputPath)), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(result, null, 2), "utf8");
-  console.log(`✅  Converted → ${outputPath}`);
+  console.log(` Converted → ${outputPath}`);
   console.log(`   ${(result as any).timeline.length} timeline items`);
 }
