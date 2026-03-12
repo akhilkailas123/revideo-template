@@ -208,6 +208,11 @@ function* runLayer(view: any, item: any, refs: any) {
     // Set item.textWrap = false in config to disable.
     const textWidth: number | undefined = item.width ?? undefined;
     const textWrap: boolean | 'pre' | 'balance' = item.textWrap ?? true;
+    const lineHeight: number = item.lineHeight ?? 300;
+    const letterSpacing: number = item.letterSpacing ?? 0;
+    const skewX: number = item.skewX ?? 0;
+    const skewY: number = item.skewY ?? 0;
+    const rotation: number = item.rotation ?? 0;
 
     /* ── SLIDE-IN-LEFT ─────────────────────────────────────────────────
      * Text slides from off-screen RIGHT to its final config x/y position.
@@ -218,10 +223,6 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
-      const lineHeight = item.lineHeight ?? 300;
-      const letterSpacing = item.letterSpacing ?? 0;
-      const skewX = item.skewX ?? 0;
-      const skewY = item.skewY ?? 0;
       const slideTime = slideInLeft.time ?? 0.2;
 
       // Start position: right edge of screen + half text width offset
@@ -245,6 +246,7 @@ function* runLayer(view: any, item: any, refs: any) {
           skewY={skewY}
           width={textWidth}
           textWrap={textWrap}
+          rotation={rotation}
         />
       );
 
@@ -274,10 +276,6 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
-      const lineHeight = item.lineHeight ?? 300;
-      const letterSpacing = item.letterSpacing ?? 0;
-      const skewX = item.skewX ?? 0;
-      const skewY = item.skewY ?? 0;
       const fadeTime = fadeIn.time ?? 0.3;
 
       // Add node with opacity 0 at exact config position
@@ -299,6 +297,7 @@ function* runLayer(view: any, item: any, refs: any) {
           skewY={skewY}
           width={textWidth}
           textWrap={textWrap}
+          rotation={rotation}
         />
       );
 
@@ -324,10 +323,6 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx      = toSceneX(pos.x);
       const ty      = toSceneY(pos.y);
       const fSize   = item.fontSize ?? 80;
-      const lineHeight = item.lineHeight ?? 300;
-      const letterSpacing = item.letterSpacing ?? 0;
-      const skewX = item.skewX ?? 0;
-      const skewY = item.skewY ?? 0;
 
       view.add(
         <Txt
@@ -347,6 +342,7 @@ function* runLayer(view: any, item: any, refs: any) {
           skewY={skewY}
           width={textWidth}
           textWrap={textWrap}
+          rotation={rotation}
         />
       );
 
@@ -380,6 +376,7 @@ function* runLayer(view: any, item: any, refs: any) {
             skewY={skewY}
             width={textWidth}
             textWrap={textWrap}
+            rotation={rotation}
           />
         </Rect>
       );
@@ -416,6 +413,7 @@ function* runLayer(view: any, item: any, refs: any) {
           skewY={skewY}
           width={textWidth}
           textWrap={textWrap}
+          rotation={rotation}
         />
       );
     }
