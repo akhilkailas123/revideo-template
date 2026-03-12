@@ -323,6 +323,10 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx      = toSceneX(pos.x);
       const ty      = toSceneY(pos.y);
       const fSize   = item.fontSize ?? 80;
+      // If fadeIn is also specified alongside wipeRight, opacity ramps
+      // 0→1 on the mask container during the reveal so the leading edge
+      // softly dissolves in rather than appearing as a hard clip line.
+      const withFade = !!fadeIn;
 
       view.add(
         <Txt
@@ -360,6 +364,7 @@ function* runLayer(view: any, item: any, refs: any) {
           height={realH * 1.1}
           clip={true}
           zIndex={item.zIndex ?? 1}
+          opacity={withFade ? 0 : 1}
         >
           <Txt
             ref={refs[item.id]}
@@ -386,12 +391,17 @@ function* runLayer(view: any, item: any, refs: any) {
       const revealTime = wipeRight.time ?? 0.9;
 
       yield* tween(revealTime, v => {
-        const w = realW * easeInOutCubic(v);
+        const ease = easeInOutCubic(v);
+        const w = realW * ease;
         maskRef().x(tx - realW / 2 + w / 2);
         maskRef().width(w);
         refs[item.id]().x(tx - (tx - realW / 2 + w / 2));
+        // Simultaneously fade opacity so there's no hard leading edge
+        if (withFade) maskRef().opacity(ease);
       });
 
+      // Snap to fully visible final state
+      maskRef().opacity(1);
       const holdTime = (item.duration ?? 0) - revealTime;
       if (holdTime > 0) yield* waitFor(holdTime);
       return;
@@ -424,7 +434,6 @@ function* runLayer(view: any, item: any, refs: any) {
     const lines: string[]    = item.lines ?? [];
     const fontSize: number   = item.fontSize  ?? 50;
     const lineHeight: number = item.lineHeight ?? Math.round(fontSize * 1.6);
-    const letterSpacing : number = item.letterSpacing ?? 0;
     const color: string      = item.color ?? '#ffffff';
 
     const area  = item.scrollArea ?? { x: 0.5, y: 0.5, width: 0.4, height: 0.6 };
@@ -456,7 +465,6 @@ function* runLayer(view: any, item: any, refs: any) {
             fontSize={fontSize}
             fontFamily={fontFamily}
             lineHeight={lineHeight}
-            letterSpacing={letterSpacing}
             fill={line === '' ? '#00000000' : color}
             textAlign={item.textAlign ?? 'center'}
             width={areaW}

@@ -39,9 +39,9 @@
       "text": "Congratulations,",
       "fontSize": 130,
       "fontFamily": "CaveatBrush-Regular",
-      "lineHeight":150,
-      "letterSpacing":0,
-      "color": "#000000",
+      "lineHeight": 150,
+      "letterSpacing": 0,
+      "color": "#434343",
       "start": 11.10,
       "duration": 18,
       "skewX": 0,
@@ -53,6 +53,9 @@
       "animation": {
         "wipeRight": {
           "time": 0.63
+        },
+        "fadeIn": {
+          "time": 0.63
         }
       }
     },
@@ -63,9 +66,9 @@
       "text": "{{Jacqueline Washington}},",
       "fontSize": 98,
       "fontFamily": "CaveatBrush-Regular",
-      "lineHeight":300,
-      "letterSpacing":0,
-      "color": "#000000",
+      "lineHeight": 300,
+      "letterSpacing": 0,
+      "color": "#434343",
       "start": 11.24,
       "duration": 18,
       "skewX": 0,
@@ -89,7 +92,7 @@
       "fontFamily": "CaveatBrush-Regular",
       "lineHeight": 100,
       "letterSpacing": 0,
-      "color": "#000000",
+      "color": "#434343",
       "start": 11.6,
       "duration": 18,
       "skewX": 0,
@@ -102,6 +105,9 @@
       },
       "animation": {
         "wipeRight": {
+          "time": 1
+        },
+        "fadeIn": {
           "time": 1
         }
       }
