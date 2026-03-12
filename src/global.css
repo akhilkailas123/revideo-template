@@ -15,14 +15,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Playball&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sanchez:ital@0;1&display=swap');
-
-/* ─── Local fonts example ────────────────────────────────────────────────────
-   Place your font file in public/fonts/ and uncomment the block below.
-
 @font-face {
-  font-family: 'My Custom Font';
+  font-family: 'CaveatBrush-Regular';
   src:
-    local('My Custom Font'),
-    url(/public/fonts/MyFont.ttf) format('truetype');
+    local('CaveatBrush-Regular'),
+    url(fonts/CaveatBrush-Regular.ttf) format('truetype');
 }
-*/

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<timeline version="1">
+  <layers>
+    <layer title="Logo%20%7B%22clo%22%3A%221%22%7D" volume="1.0">
+      <transition begin="10000" duration="1000" type="crossFade"/>
+      <image begin="11000" duration="9120" height="196" inPoint="1920" left="80" src="http://wevideo-images.s3.amazonaws.com/2018_05_14_f09348f2-d51e-4075-9a29-661aa228f252" title="YOURLOGO" top="820" volume="1.0" width="384">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="9120" value="1"/>
+        </opacity>
+      </image>
+    </layer>
+    <layer title="Headline" volume="1.0">
+      <transition begin="11240" duration="1000" type="directionalWipe"/>
+      <text begin="12240" duration="7880" height="240" inPoint="12240" left="92" processHtml="false" top="37" width="851">&lt;div align="center"&gt;&lt;span style="font-size: 130px; color: rgb(0, 0, 0); font-family: CaveatBrush-Regular; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(68, 68, 68); line-height: normal; letter-spacing: 0px;"&gt;C&lt;/span&gt;&lt;/span&gt;&lt;span style="color: rgb(68, 68, 68); line-height: normal; letter-spacing: 0px;"&gt;ongratulations,&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="7880" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+    <layer title="Employee%20Name" volume="1.0">
+      <transition begin="11440" duration="1000" type="directionalWipe"/>
+      <text begin="12440" duration="7680" height="268" inPoint="12440" left="11" processHtml="false" top="179" width="1018">&lt;div align="center"&gt;&lt;span style="font-family: CaveatBrush-Regular; line-height: 100%; letter-spacing: 0px;"&gt;&lt;span style="font-size: 98px; color: rgb(0, 0, 0); line-height: 100%; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(68, 68, 68); line-height: 100%; letter-spacing: 0px;"&gt;{{Jacqueline Washington}},&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="7680" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+    <layer title="Announcement" volume="1.0">
+      <transition begin="11680" duration="1000" type="directionalWipe"/>
+      <text begin="12680" duration="7440" height="307" inPoint="12680" left="70" processHtml="false" top="370" width="885">&lt;div align="center"&gt;&lt;span style="font-size: 100px; color: rgb(0, 0, 0); font-family: CaveatBrush-Regular; line-height: 100%; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(68, 68, 68); line-height: 100%; letter-spacing: 0px;"&gt;{{on the birth of&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div align="center"&gt;&lt;span style="font-size: 100px; color: rgb(0, 0, 0); font-family: CaveatBrush-Regular; line-height: 100%; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(68, 68, 68); line-height: 100%; letter-spacing: 0px;"&gt;your baby boy!}}&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="7440" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+    <layer title="Background%20Video" volume="1.0">
+      <video begin="0" duration="20120" height="1080" left="0" loopable="false" src="http://wevideo-original-videos.s3.amazonaws.com/2019_11_14_d1107e3f-3b98-4f7c-ab9f-5a9ad24aaa69" title="H_DS_CONGRATS_ON_BABY_BOY_DB" top="0" volume="1.0" width="1920">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="20120" value="1"/>
+        </opacity>
+      </video>
+    </layer>
+  </layers>
+</timeline>
