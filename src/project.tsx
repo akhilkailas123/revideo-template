@@ -424,6 +424,7 @@ function* runLayer(view: any, item: any, refs: any) {
     const lines: string[]    = item.lines ?? [];
     const fontSize: number   = item.fontSize  ?? 50;
     const lineHeight: number = item.lineHeight ?? Math.round(fontSize * 1.6);
+    const letterSpacing : number = item.letterSpacing ?? 0;
     const color: string      = item.color ?? '#ffffff';
 
     const area  = item.scrollArea ?? { x: 0.5, y: 0.5, width: 0.4, height: 0.6 };
@@ -455,6 +456,7 @@ function* runLayer(view: any, item: any, refs: any) {
             fontSize={fontSize}
             fontFamily={fontFamily}
             lineHeight={lineHeight}
+            letterSpacing={letterSpacing}
             fill={line === '' ? '#00000000' : color}
             textAlign={item.textAlign ?? 'center'}
             width={areaW}
