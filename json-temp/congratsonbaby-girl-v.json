@@ -1,0 +1,116 @@
+{
+  "settings": {
+    "size": {
+      "x": 1080,
+      "y": 1920
+    },
+    "background": "#000000"
+  },
+  "timeline": [
+    {
+      "id": "background-video",
+      "type": "video",
+      "src": "http://localhost:3001/395-og.mp4",
+      "start": 0,
+      "duration": 20,
+      "zIndex": 0
+    },
+    {
+      "id": "logo",
+      "type": "image",
+      "src": "http://localhost:3001/logo.png",
+      "start": 0,
+      "duration": 20,
+      "width": 430,
+      "position": {
+        "x": 0.510,
+        "y": 0.908
+      },
+      "animation": {
+        "fadeIn": {
+          "time": 1
+        }
+      }
+    },
+    {
+      "id": "Headline",
+      "type": "text",
+      "textAlign": "center",
+      "text": "Congratulations,",
+      "fontSize": 130,
+      "fontFamily": "CaveatBrush-Regular",
+      "lineHeight": 150,
+      "letterSpacing": 0,
+      "color": "#434343",
+      "start": 11.10,
+      "duration": 18,
+      "skewX": 0,
+      "skewY": 0,
+      "position": {
+        "x": 0.500,
+        "y": 0.090
+      },
+      "animation": {
+        "wipeRight": {
+          "time": 0.63
+        },
+        "fadeIn": {
+          "time": 0.63
+        }
+      }
+    },
+    {
+      "id": "Employee-name",
+      "type": "text",
+      "textAlign": "center",
+      "text": "{{Alexander Hernandez}},",
+      "fontSize": 99,
+      "fontFamily": "CaveatBrush-Regular",
+      "lineHeight": 300,
+      "letterSpacing": 0,
+      "color": "#434343",
+      "start": 11.24,
+      "duration": 18,
+      "skewX": 0,
+      "skewY": 0,
+      "position": {
+        "x": 0.500,
+        "y": 0.160
+      },
+      "animation": {
+        "fadeIn": {
+          "time": 1
+        }
+      }
+    },
+    {
+      "id": "Announcement",
+      "type": "text",
+      "textAlign": "center",
+      "text": "{{on the birth of Anastasia Charlotte!}}",
+      "fontSize": 100,
+      "fontFamily": "CaveatBrush-Regular",
+      "lineHeight": 100,
+      "letterSpacing": 0,
+      "color": "#434343",
+      "start": 11.6,
+      "duration": 18,
+      "skewX": 0,
+      "skewY": 0,
+      "width": 900,
+      "textWrap": true,
+      "position": {
+        "x": 0.500,
+        "y": 0.260
+      },
+      "animation": {
+        "wipeRight": {
+          "time": 1
+        },
+        "fadeIn": {
+          "time": 1
+        }
+      }
+    }
+  ]
+}
