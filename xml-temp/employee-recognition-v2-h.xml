@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<timeline version="1">
+  <layers>
+    <layer title="Logo%20%7B%22clo%22%3A%221%22%7D" volume="1.0">
+      <transition begin="1000" duration="400" type="crossFade"/>
+      <image begin="1400" duration="3400" height="206" inPoint="1400" left="269" src="http://wevideo-images.s3.amazonaws.com/2018_05_14_f09348f2-d51e-4075-9a29-661aa228f252" title="YOURLOGO" top="776" volume="1.0" width="403">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="3400" value="1"/>
+        </opacity>
+      </image>
+      <transition begin="4800" duration="400" type="crossFade"/>
+      <transition begin="6400" duration="480" type="crossFade"/>
+      <image begin="6880" duration="23200" height="196" inPoint="720" left="267" src="http://wevideo-images.s3.amazonaws.com/2018_05_14_f09348f2-d51e-4075-9a29-661aa228f252" title="YOURLOGO" top="762" volume="1.0" width="384">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="23200" value="1"/>
+        </opacity>
+      </image>
+    </layer>
+    <layer title="Paragraph" volume="1.0">
+      <transition begin="6000" duration="400" type="crossFade"/>
+      <text begin="6400" duration="23680" height="414" inPoint="400" left="174" processHtml="false" top="285" width="687">&lt;div align="center" style="text-align: left;"&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;{{Lorem ipsum dolor sit &lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;am&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;et, consectetur adi&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;p&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;iscing e&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;l&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;it, s&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;e&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;d do eiusmod&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt; te&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;mpor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ul&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;t&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 35px; color: rgb(0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;rices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.}}&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="23680" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+    <layer title="Employee%20Name" volume="1.0">
+      <transition begin="6000" duration="400" type="crossFade"/>
+      <text begin="6400" duration="23680" height="93" inPoint="400" left="179" processHtml="false" top="147" width="787">&lt;div align="center" style="text-align: left;"&gt;&lt;span style="font-size: 46px; color: rgb(0, 0, 0); font-family: Roboto; line-height: 100%; letter-spacing: 0px;"&gt;&lt;b&gt;&lt;span style="color: rgb(0, 0, 0); line-height: 100%; letter-spacing: 0px;"&gt;{{Employee Name Here}}&lt;/span&gt;&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="23680" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+    <layer title="Employee%20Honor%20Title" volume="1.0">
+      <transition begin="5280" duration="480" type="wipeRight"/>
+      <text begin="5760" duration="24320" height="111" inPoint="760" left="925" processHtml="false" top="833" width="863">&lt;div align="center"&gt;&lt;span style="font-size: 62px; color: rgb(255, 255, 255); font-family: Roboto; line-height: 90%; letter-spacing: 0px;"&gt;&lt;b&gt;{{&lt;/b&gt;&lt;/span&gt;&lt;b style="font-family: Roboto;"&gt;&lt;span style="font-size: 62px; color: rgb(255, 255, 255); line-height: 90%; letter-spacing: 0px;"&gt;Employee Honor Here&lt;/span&gt;&lt;/b&gt;&lt;span style="font-size: 62px; color: rgb(255, 255, 255); font-family: Roboto; line-height: 90%; letter-spacing: 0px;"&gt;&lt;b&gt;}}&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="24320" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+    <layer title="Profile%20Photo" volume="1.0">
+      <transition begin="5280" duration="400" type="wipeLeft"/>
+      <image begin="5680" duration="24400" height="605" inPoint="400" left="1067" src="http://wevideo-images.s3.amazonaws.com/2019_08_12_dd9ecf0f-2de7-4888-9195-28f9cbf8f917" title="woman-square" top="201" volume="1.0" width="605">
+        <opacity>
+          <entry time="600" value="1"/>
+          <entry time="24400" value="1"/>
+        </opacity>
+      </image>
+    </layer>
+    <layer title="Main%20Video" volume="1.0">
+      <video begin="0" duration="30080" height="1080" left="0" src="http://wevideo-original-videos.s3.amazonaws.com/2019_06_27_1254cad5-eed9-48da-bbdf-f756102c29c6" title="H_DS_GENERIC_EMPLOYEE_RECOGNITION_V2_CD" top="0" volume="1.0" width="1920">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="30080" value="1"/>
+        </opacity>
+      </video>
+    </layer>
+  </layers>
+</timeline>

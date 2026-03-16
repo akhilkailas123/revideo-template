@@ -1,8 +1,8 @@
 {
   "settings": {
     "size": {
-      "x": 1080,
-      "y": 1920
+      "x": 1920,
+      "y": 1080
     },
     "background": "#000000"
   },
@@ -10,7 +10,7 @@
     {
       "id": "background-video",
       "type": "video",
-      "src": "http://localhost:3001/957-og.mp4",
+      "src": "http://localhost:3001/293-og.mp4",
       "start": 0,
       "duration": 20,
       "zIndex": 0
@@ -19,129 +19,110 @@
       "id": "logo",
       "type": "image",
       "src": "http://localhost:3001/logo.png",
-      "start": 0,
-      "duration": 20,
-      "width": 430,
+      "start": 0.76,
+      "duration": 4.65,
+      "width": 390,
       "position": {
-        "x": 0.500,
-        "y": 0.920
+        "x": 0.240,
+        "y": 0.800
+      },
+      "animation": {
+        "fadeIn": {
+          "time": 1
+        },
+        "fadeOut": { "time": 1 }
       }
     },
     {
-      "id": "title-month",
+      "id": "logo-2",
+      "type": "image",
+      "src": "http://localhost:3001/logo.png",
+      "start": 6.10,
+      "duration": 20,
+      "width": 390,
+      "position": {
+        "x": 0.240,
+        "y": 0.500
+      },
+      "animation": {
+        "fadeIn": {
+          "time": 1
+        }
+      }
+    },
+    {
+      "id": "Employee-honor",
       "type": "text",
       "textAlign": "left",
-      "text": "{{September}}",
-      "fontSize": 70,
+      "text": "{{Employee Honor Here}}",
+      "fontSize": 62,
       "fontFamily": "Roboto",
-      "lineHeight": 105,
-      "letterSpacing": 0,
+      "lineHeight":105,
+      "letterSpacing":0,
       "color": "#ffffff",
-      "start": 0,
+      "start": 5.25,
       "duration": 18,
       "skewX": 0,
       "skewY": 0,
-      "rotation": -7,
       "position": {
-        "x": 0.450,
-        "y": 0.424
+        "x": 0.708,
+        "y": 0.830
+      },
+      "animation": {
+        "wipeRight": {
+          "time": 0.63
+        }
       }
     },
     {
-      "id": "title-sub",
+      "id": "employee-name",
       "type": "text",
       "textAlign": "left",
-      "text": "{{Birthdays}}",
-      "fontSize": 90,
+      "text": "{{Employee Name Here}}",
+      "fontSize": 46,
       "fontFamily": "Roboto",
-      "lineHeight": 105,
-      "letterSpacing": 0,
-      "color": "#ffffff",
-      "start": 0,
-      "duration": 17,
+      "lineHeight":105,
+      "letterSpacing":0,
+      "color": "#000000",
+      "start": 6.00,
+      "duration": 18,
       "skewX": 0,
       "skewY": 0,
-      "rotation": -2,
       "position": {
-        "x": 0.438,
-        "y": 0.517
+        "x": 0.245,
+        "y": 0.190
+      },
+      "animation": {
+        "fadeIn": {
+          "time": 0.63
+        }
       }
     },
     {
-      "id": "scroll-text",
-      "type": "scroll-text",
+      "id": "Paragraph",
+      "type": "text",
       "textAlign": "left",
-      "start": 0,
-      "duration": 100,
-      "fontSize": 52,
-      "fontFamily": "AvenirNextRoundedStd-Med",
-      "lineHeight": 200,
-      "letterSpacing": 4,
-      "color": "#000000",
-      "zIndex": 1,
-      "scrollArea": {
-        "x": 0.550,
-        "y": 0.100,
-        "width": 0.600,
-        "height": 0.72
+      "text": "{{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.}}",
+      "fontSize": 35,
+      "fontFamily": "Roboto",
+      "lineHeight":41,
+      "letterSpacing":0,
+      "color": "#1111ff",
+      "start": 6.00,
+      "duration": 18,
+      "skewX": 0,
+      "skewY": 0,
+      "width": 620,
+      "textWrap": true,
+      "position": {
+        "x": 0.274,
+        "y": 0.450
       },
-      "lines": [
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}",
-        "{{Month/Day - Name}}"
-      ]
+      "animation": {
+        "fadeIn": {
+          "time": 0.63
+        }
+      }
     }
   ]
 }

@@ -37,26 +37,14 @@ function* runLayer(view: any, item: any, refs: any) {
   const textAlign: 'left' | 'center' | 'right' = item.textAlign ?? 'center';
   const fontFamily: string | undefined = item.fontFamily ?? undefined;
 
-  /* ----------------------------------------------------------------
-     VIDEO
-     Supports optional transition field:
-       "transition": { "type": "fade", "duration": 1 }
-     When set, the video fades in from opacity 0 over transition.duration
-     seconds at the moment it starts (i.e. the previous video fades out
-     simultaneously because it's simply no longer on top).
-     For the outgoing video we also fade it out at its end if next video
-     has a transition — we handle this by fading the incoming video in
-     on top, which naturally covers the outgoing one.
-  ---------------------------------------------------------------- */
   if (item.type === 'video') {
     refs[item.id]        = createRef<Video>();
-    const prevVideoId    = item.prevVideoId ?? null;          // set by config for swipe
+    const prevVideoId    = item.prevVideoId ?? null;
     const transition     = item.transition ?? null;
     const transType      = transition?.type ?? 'none';
     const transDuration  = transition?.duration ?? 1;
     const zIdx           = item.zIndex ?? 0;
 
-    /* ── FADE ──────────────────────────────────────────────────────── */
     if (transType === 'fade') {
       view.add(
         <Video
@@ -74,12 +62,7 @@ function* runLayer(view: any, item: any, refs: any) {
       return;
     }
 
-    /* ── SWIPE-LEFT-BLUR ───────────────────────────────────────────── */
     if (transType === 'swipe-left-blur') {
-      // Incoming video starts off-screen to the RIGHT, slides LEFT to centre.
-      // Outgoing video (prevVideoId) slides LEFT off-screen simultaneously.
-      // Both get a blur that peaks at mid-transition and clears at the end.
-
       const inRef  = refs[item.id];
       const outRef = prevVideoId ? refs[prevVideoId] : null;
 
@@ -89,31 +72,27 @@ function* runLayer(view: any, item: any, refs: any) {
           src={item.src}
           play
           size={['100%', '100%']}
-          x={WIDTH}              // start fully off-screen right
-          zIndex={zIdx + 1}      // sit above outgoing video
+          x={WIDTH}
+          zIndex={zIdx + 1}
         />
       );
 
-      yield* waitFor(0); // let node initialise
+      yield* waitFor(0);
 
       yield* tween(transDuration, v => {
         const ease  = easeInOutCubic(v);
-        // Blur peaks (maxBlur px) at v=0.5 then drops back to 0
         const maxBlur = 40;
         const blur  = maxBlur * Math.sin(Math.PI * v);
 
-        // Incoming: slide from WIDTH → 0
         inRef().x(WIDTH * (1 - ease));
         inRef().filters([{ type: 'blur', radius: blur }] as any);
 
-        // Outgoing: slide from 0 → -WIDTH
         if (outRef) {
           outRef().x(-WIDTH * ease);
           outRef().filters([{ type: 'blur', radius: blur }] as any);
         }
       });
 
-      // Snap to clean final state
       inRef().x(0);
       inRef().filters([]);
       if (outRef) {
@@ -125,7 +104,6 @@ function* runLayer(view: any, item: any, refs: any) {
       return;
     }
 
-    /* ── NO TRANSITION (default) ───────────────────────────────────── */
     view.add(
       <Video
         ref={refs[item.id]}
@@ -139,7 +117,6 @@ function* runLayer(view: any, item: any, refs: any) {
     return;
   }
 
-  /* AUDIO */
   if (item.type === 'audio') {
     view.add(
       <Audio src={item.src} play time={item.offset ?? 0} />
@@ -152,60 +129,60 @@ function* runLayer(view: any, item: any, refs: any) {
 
     const imgWidth  = item.width  ?? 200;
     const imgHeight = item.height ?? imgWidth;
-    const halfW = imgWidth  / 2;
-    const halfH = imgHeight / 2;
     const rawX  = toSceneX(pos.x);
     const rawY  = toSceneY(pos.y);
-    const clampedX = rawX;
-    const clampedY = rawY;
     const startOpacity = item.animation?.fadeIn ? 0 : 1;
+    // ── NEW ──
+    const fadeInTime  = item.animation?.fadeIn?.time  ?? 0;
+    const fadeOutTime = item.animation?.fadeOut?.time ?? 0;
 
     view.add(
       <Img
         ref={refs[item.id]}
         src={item.src}
         width={imgWidth}
-        x={clampedX}
-        y={clampedY}
+        x={rawX}
+        y={rawY}
         opacity={startOpacity}
         zIndex={item.zIndex ?? 1}
       />
     );
 
     if (item.animation) {
-      yield* chain(
-        all(
-          ...(item.animation.fadeIn
-            ? [refs[item.id]().opacity(1, item.animation.fadeIn.time ?? 0.1)]
-            : []),
-          refs[item.id]().scale(
-            item.animation.scaleIn?.value ?? 1,
-            item.animation.scaleIn?.time  ?? 0,
-          ),
-          refs[item.id]().rotation(
-            item.animation.rotate?.value ?? 0,
-            item.animation.rotate?.time  ?? 0,
-          ),
-        ),
-        refs[item.id]().scale(
-          item.animation.scaleOut?.value ?? 1,
-          item.animation.scaleOut?.time  ?? 0,
-        ),
-      );
+      // ── CHANGED: replaced chain/all block with explicit fade-in → hold → fade-out ──
+      yield* waitFor(0);
+
+      // Fade in
+      if (fadeInTime > 0) {
+        yield* tween(fadeInTime, v => {
+          refs[item.id]().opacity(easeInOutCubic(v));
+        });
+        refs[item.id]().opacity(1);
+      }
+
+      // Hold (total duration minus fade-in and fade-out)
+      const holdTime = (item.duration ?? 0) - fadeInTime - fadeOutTime;
+      if (holdTime > 0) yield* waitFor(holdTime);
+
+      // Fade out
+      if (fadeOutTime > 0) {
+        yield* tween(fadeOutTime, v => {
+          refs[item.id]().opacity(1 - easeInOutCubic(v));
+        });
+        refs[item.id]().opacity(0);
+      }
     }
   }
 
-  /* PLAIN TEXT — supports wipeRight and slideInLeft animations */
   if (item.type === 'text') {
     refs[item.id] = createRef<Txt>();
 
     const wipeRight   = item.animation?.wipeRight;
     const slideInLeft = item.animation?.slideInLeft;
     const fadeIn      = item.animation?.fadeIn;
+    // ── NEW ──
+    const fadeOut     = item.animation?.fadeOut;
 
-    // Text wrap: use item.width (pixels) to constrain line length.
-    // textWrap defaults to true so long text breaks automatically.
-    // Set item.textWrap = false in config to disable.
     const textWidth: number | undefined = item.width ?? undefined;
     const textWrap: boolean | 'pre' | 'balance' = item.textWrap ?? true;
     const lineHeight: number = item.lineHeight ?? 300;
@@ -214,19 +191,15 @@ function* runLayer(view: any, item: any, refs: any) {
     const skewY: number = item.skewY ?? 0;
     const rotation: number = item.rotation ?? 0;
 
-    /* ── SLIDE-IN-LEFT ─────────────────────────────────────────────────
-     * Text slides from off-screen RIGHT to its final config x/y position.
-     * Opacity goes from 0 → 1 simultaneously, reaching full opacity at end.
-     * Duration = slideInLeft.time (e.g. 0.2 seconds).
-     * ----------------------------------------------------------------- */
     if (slideInLeft) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
       const slideTime = slideInLeft.time ?? 0.2;
+      // ── NEW ──
+      const fadeOutTime = fadeOut?.time ?? 0;
 
-      // Start position: right edge of screen + half text width offset
-      const startX = WIDTH / 2 + 200; // safely off-screen right
+      const startX = WIDTH / 2 + 200;
 
       view.add(
         <Txt
@@ -254,31 +227,35 @@ function* runLayer(view: any, item: any, refs: any) {
 
       yield* tween(slideTime, v => {
         const ease = easeInOutCubic(v);
-        // x: slides from startX → tx (final config position)
         refs[item.id]().x(startX + (tx - startX) * ease);
-        // opacity: 0 → 1
         refs[item.id]().opacity(ease);
       });
 
-      // Snap to exact final position
       refs[item.id]().x(tx);
       refs[item.id]().opacity(1);
 
-      const holdTime = (item.duration ?? 0) - slideTime;
+      // ── CHANGED: subtract fadeOutTime from holdTime ──
+      const holdTime = (item.duration ?? 0) - slideTime - fadeOutTime;
       if (holdTime > 0) yield* waitFor(holdTime);
+
+      // ── NEW: fade out ──
+      if (fadeOutTime > 0) {
+        yield* tween(fadeOutTime, v => {
+          refs[item.id]().opacity(1 - easeInOutCubic(v));
+        });
+        refs[item.id]().opacity(0);
+      }
       return;
     }
 
-    /* ── FADE IN ───────────────────────────────────────────────────────
-     * Opacity goes from 0 → 1 over fadeIn.time seconds at config x/y.
-     * ----------------------------------------------------------------- */
     if (fadeIn && !wipeRight && !slideInLeft) {
       const tx       = toSceneX(pos.x);
       const ty       = toSceneY(pos.y);
       const fSize    = item.fontSize ?? 80;
-      const fadeTime = fadeIn.time ?? 0.3;
+      const fadeInTime  = fadeIn.time ?? 0.3;
+      // ── NEW ──
+      const fadeOutTime = fadeOut?.time ?? 0;
 
-      // Add node with opacity 0 at exact config position
       view.add(
         <Txt
           ref={refs[item.id]}
@@ -301,19 +278,26 @@ function* runLayer(view: any, item: any, refs: any) {
         />
       );
 
-      // Wait one full frame so node is mounted and signal is accessible
       yield* waitFor(0);
       yield* waitFor(0);
 
-      // Animate opacity 0 → 1 over fadeTime seconds
-      yield* tween(fadeTime, v => {
+      yield* tween(fadeInTime, v => {
         refs[item.id]().opacity(easeInOutCubic(v));
       });
 
-      // Snap to full opacity and hold for remaining duration
       refs[item.id]().opacity(1);
-      const holdTime = (item.duration ?? 0) - fadeTime;
+
+      // ── CHANGED: subtract fadeOutTime from holdTime ──
+      const holdTime = (item.duration ?? 0) - fadeInTime - fadeOutTime;
       if (holdTime > 0) yield* waitFor(holdTime);
+
+      // ── NEW: fade out ──
+      if (fadeOutTime > 0) {
+        yield* tween(fadeOutTime, v => {
+          refs[item.id]().opacity(1 - easeInOutCubic(v));
+        });
+        refs[item.id]().opacity(0);
+      }
       return;
     }
 
@@ -323,10 +307,9 @@ function* runLayer(view: any, item: any, refs: any) {
       const tx      = toSceneX(pos.x);
       const ty      = toSceneY(pos.y);
       const fSize   = item.fontSize ?? 80;
-      // If fadeIn is also specified alongside wipeRight, opacity ramps
-      // 0→1 on the mask container during the reveal so the leading edge
-      // softly dissolves in rather than appearing as a hard clip line.
       const withFade = !!fadeIn;
+      // ── NEW ──
+      const fadeOutTime = fadeOut?.time ?? 0;
 
       view.add(
         <Txt
@@ -396,14 +379,22 @@ function* runLayer(view: any, item: any, refs: any) {
         maskRef().x(tx - realW / 2 + w / 2);
         maskRef().width(w);
         refs[item.id]().x(tx - (tx - realW / 2 + w / 2));
-        // Simultaneously fade opacity so there's no hard leading edge
         if (withFade) maskRef().opacity(ease);
       });
 
-      // Snap to fully visible final state
       maskRef().opacity(1);
-      const holdTime = (item.duration ?? 0) - revealTime;
+
+      // ── CHANGED: subtract fadeOutTime from holdTime ──
+      const holdTime = (item.duration ?? 0) - revealTime - fadeOutTime;
       if (holdTime > 0) yield* waitFor(holdTime);
+
+      // ── NEW: fade out (fades the mask container so entire text fades out) ──
+      if (fadeOutTime > 0) {
+        yield* tween(fadeOutTime, v => {
+          maskRef().opacity(1 - easeInOutCubic(v));
+        });
+        maskRef().opacity(0);
+      }
       return;
 
     } else {
@@ -429,7 +420,6 @@ function* runLayer(view: any, item: any, refs: any) {
     }
   }
 
-  /* SCROLL TEXT */
   if (item.type === 'scroll-text') {
     const lines: string[]    = item.lines ?? [];
     const fontSize: number   = item.fontSize  ?? 50;
