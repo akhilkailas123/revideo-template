@@ -42,12 +42,27 @@
       "width": 390,
       "position": {
         "x": 0.240,
-        "y": 0.500
+        "y": 0.800
       },
       "animation": {
         "fadeIn": {
           "time": 1
         }
+      }
+    },
+    {
+      "id": "dp",
+      "type": "image",
+      "src": "http://localhost:3001/293-dp.png",
+      "start": 5.10,
+      "duration": 10,
+      "width": 602,
+      "position": {
+        "x": 0.713,
+        "y": 0.468
+      },
+      "animation": {
+        "wipeLeft": { "time": 0.63 }
       }
     },
     {
