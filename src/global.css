@@ -21,3 +21,10 @@
     local('CaveatBrush-Regular'),
     url(fonts/CaveatBrush-Regular.ttf) format('truetype');
 }
+
+@font-face {
+  font-family: 'AvenirNextRoundedStd-Med';
+  src:
+    local('AvenirNextRoundedStd-Med'),
+    url(fonts/AvenirNextRoundedStd-Med.ttf) format('truetype');
+}
