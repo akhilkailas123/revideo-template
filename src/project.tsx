@@ -452,7 +452,7 @@ function* runLayer(view: any, item: any, refs: any) {
         {lines.map((line: string, i: number) => (
           <Txt
             ref={lineRefs[i]}
-            key={i}
+            key={String(i)}
             text={line === '' ? ' ' : line}
             fontSize={fontSize}
             fontFamily={fontFamily}

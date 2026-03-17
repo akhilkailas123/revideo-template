@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<timeline version="1">
+  <layers>
+    <layer title="Light%20Logo%20%7B%22clo%22%3A%221%22%7D" volume="1.0">
+      <transition begin="19840" duration="1000" type="crossFade"/>
+      <image begin="20840" duration="8880" height="196" inPoint="1000" left="1172" src="http://wevideo-images.s3.amazonaws.com/2018_05_14_f09348f2-d51e-4075-9a29-661aa228f252" title="YOURLOGO" top="122" volume="1.0" width="384">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="8880" value="1"/>
+        </opacity>
+      </image>
+      <transition begin="29720" duration="1000" type="directionalWipe"/>
+    </layer>
+    <layer title="Dark%20Logo%20%7B%22clo%22%3A%22w%22%7D" volume="1.0">
+      <transition begin="4720" duration="1000" type="crossFade"/>
+      <image begin="5720" duration="5680" height="196" inPoint="1000" left="768" src="http://wevideo-images.s3.amazonaws.com/2018_05_14_f09348f2-d51e-4075-9a29-661aa228f252" title="YOURLOGO" top="790" volume="1.0" width="384">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="5680" value="1"/>
+        </opacity>
+      </image>
+      <transition begin="11400" duration="1000" type="directionalWipe"/>
+      <transition begin="31320" duration="1000" type="directionalWipe"/>
+      <image begin="32320" duration="2440" height="245" inPoint="1000" left="723" src="http://wevideo-images.s3.amazonaws.com/2018_05_14_f09348f2-d51e-4075-9a29-661aa228f252" title="YOURLOGO" top="275" volume="1.0" width="480">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="2440" value="1"/>
+        </opacity>
+      </image>
+    </layer>
+    <layer title="Name" volume="1.0">
+      <transition begin="19840" duration="1000" type="directionalWipe"/>
+      <text autoFit="true" begin="20840" duration="8880" height="185" inPoint="1000" left="774" processHtml="false" top="380" valign="center" width="1149">&lt;div align="center" style="text-align: center;"&gt;&lt;span style="font-size: 88px; color: rgb(255, 255, 255); font-family: AvenirLTStd-Black; line-height: normal; letter-spacing: 0px;"&gt;{{Stephanie Anderson}}&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="8880" value="1"/>
+        </opacity>
+      </text>
+      <transition begin="29720" duration="1000" type="directionalWipe"/>
+    </layer>
+    <layer title="Title" volume="1.0">
+      <transition begin="20080" duration="1000" type="directionalWipe"/>
+      <text autoFit="true" begin="21080" duration="8640" height="161" inPoint="1000" left="753" processHtml="false" top="510" valign="center" width="1164">&lt;div align="center" style="text-align: center;"&gt;&lt;span style="font-size: 68px; color: rgb(255, 255, 255); font-family: AvenirLTStd-Book; line-height: normal; letter-spacing: 0px;"&gt;{{SALES ASSOCIATE}}&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="8640" value="1"/>
+        </opacity>
+      </text>
+      <transition begin="29720" duration="1000" type="directionalWipe"/>
+    </layer>
+    <layer title="Employee%20Info" volume="1.0">
+      <transition begin="21080" duration="1000" type="directionalWipe"/>
+      <text autoFit="false" begin="22080" duration="7640" height="379" inPoint="1000" left="743" processHtml="false" top="620" valign="top" width="1174">&lt;div align="center" style="text-align: center;"&gt;&lt;span style="font-size: 80px; color: rgb(255, 255, 255); font-family: CaveatBrush-Regular; line-height: 140%; letter-spacing: 0px;"&gt;{{Enjoys: traveling around the world, competitive ice skating, and taking her kids to play at their local park}}&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="7640" value="1"/>
+        </opacity>
+      </text>
+      <transition begin="29720" duration="1000" type="directionalWipe"/>
+    </layer>
+    <layer title="Dealership%20Start%20Year" volume="1.0">
+      <transition begin="5120" duration="1000" type="directionalWipe"/>
+      <text autoFit="false" begin="6120" duration="5280" height="215" inPoint="1000" left="666" processHtml="false" top="462" valign="top" width="581">&lt;div align="center" style="text-align: center;"&gt;&lt;span style="font-size: 172px; color: rgb(38, 38, 38); font-family: AvenirLTStd-Black; line-height: normal; letter-spacing: 0px;"&gt;{{&lt;/span&gt;&lt;span style="font-size: 172px; color: rgb(0, 0, 0); font-family: AvenirLTStd-Black; line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(0, 0, 0); line-height: normal; letter-spacing: 0px;"&gt;&lt;span style="color: rgb(38, 38, 38); line-height: normal; letter-spacing: 0px;"&gt;199&lt;/span&gt;&lt;/span&gt;&lt;span style="color: rgb(38, 38, 38); line-height: normal; letter-spacing: 0px;"&gt;7&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="font-size: 172px; color: rgb(38, 38, 38); font-family: AvenirLTStd-Black; line-height: normal; letter-spacing: 0px;"&gt;}}&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="5280" value="1"/>
+        </opacity>
+      </text>
+      <transition begin="11400" duration="1000" type="directionalWipe"/>
+    </layer>
+    <layer title="Motion%20Background" volume="1.0">
+      <video begin="0" duration="34760" height="1080" left="0" loopable="true" src="http://wevideo-original-videos.s3.amazonaws.com/2020_03_17_f83197d1-d145-4043-b741-1bdcea79f6cf" title="H_DS_GENERIC_EMPLOYEE+SPOTLIGHT_2020_DB_2" top="0" volume="1.0" width="1920">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="34760" value="1"/>
+        </opacity>
+      </video>
+    </layer>
+    <layer title="Employee%20Photo" volume="1.0">
+      <transition begin="19360" duration="1000" type="fadeThroughBlack"/>
+      <image begin="20360" duration="9720" height="1080" inPoint="1000" left="0" src="http://wevideo-images.s3.amazonaws.com/2019_07_30_008fe8d0-3cc5-4817-aa9c-bc69925a7ae2" title="woman_right_bk" top="0" volume="1.0" width="853">
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="9720" value="1"/>
+        </opacity>
+      </image>
+      <transition begin="30080" duration="1000" type="slide"/>
+    </layer>
+    <layer title="Background" volume="1.0">
+      <text autoFit="false" backgroundColor="#000000" begin="0" duration="34760" height="1079" left="0" processHtml="false" top="-3" width="1920">&lt;div align="center"&gt;&lt;span style="font-size: 172px; color: rgb(255, 255, 255); background-color: rgba(0, 0, 0, 0); font-family: Roboto; line-height: normal; letter-spacing: 0px;"&gt;&lt;/span&gt;&lt;/div&gt;
+        <opacity>
+          <entry time="0" value="1"/>
+          <entry time="34760" value="1"/>
+        </opacity>
+      </text>
+    </layer>
+  </layers>
+</timeline>
