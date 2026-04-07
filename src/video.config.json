@@ -1,143 +1,240 @@
 {
   "settings": {
-    "size": {
-      "x": 1920,
-      "y": 1080
-    },
-    "background": "#000000"
+    "size": { "x": 1920, "y": 1080 }
   },
   "timeline": [
+
     {
-      "id": "background-video",
-      "type": "video",
-      "src": "http://localhost:3001/293-og.mp4",
+      "id": "title",
+      "type": "text",
       "start": 0,
-      "duration": 20,
-      "zIndex": 0
-    },
-    {
-      "id": "logo",
-      "type": "image",
-      "src": "http://localhost:3001/logo.png",
-      "start": 0.76,
-      "duration": 4.65,
-      "width": 390,
-      "position": {
-        "x": 0.240,
-        "y": 0.800
-      },
-      "animation": {
-        "fadeIn": {
-          "time": 1
-        },
-        "fadeOut": { "time": 1 }
-      }
-    },
-    {
-      "id": "logo-2",
-      "type": "image",
-      "src": "http://localhost:3001/logo.png",
-      "start": 6.10,
-      "duration": 20,
-      "width": 390,
-      "position": {
-        "x": 0.240,
-        "y": 0.800
-      },
-      "animation": {
-        "fadeIn": {
-          "time": 1
-        }
-      }
-    },
-    {
-      "id": "dp",
-      "type": "image",
-      "src": "http://localhost:3001/293-dp.png",
-      "start": 5.10,
-      "duration": 10,
-      "width": 602,
-      "position": {
-        "x": 0.713,
-        "y": 0.468
-      },
-      "animation": {
-        "wipeLeft": { "time": 0.63 }
-      }
-    },
-    {
-      "id": "Employee-honor",
-      "type": "text",
-      "textAlign": "left",
-      "text": "{{Employee Honor Here}}",
-      "fontSize": 62,
-      "fontFamily": "Roboto",
-      "lineHeight":105,
-      "letterSpacing":0,
+      "duration": 2.5,
+      "text": "3D Transition Showcase",
+      "position": { "x": 0.5, "y": 0.5 },
+      "fontSize": 80,
       "color": "#ffffff",
-      "start": 5.25,
-      "duration": 18,
-      "skewX": 0,
-      "skewY": 0,
-      "position": {
-        "x": 0.708,
-        "y": 0.830
-      },
+      "fontFamily": "sans-serif",
+      "zIndex": 5,
       "animation": {
-        "wipeRight": {
-          "time": 0.63
-        }
+        "fadeIn":  { "time": 0.5 },
+        "fadeOut": { "time": 0.5 }
       }
     },
+
     {
-      "id": "employee-name",
+      "id": "label-1",
       "type": "text",
-      "textAlign": "left",
-      "text": "{{Employee Name Here}}",
-      "fontSize": 46,
-      "fontFamily": "Roboto",
-      "lineHeight":105,
-      "letterSpacing":0,
-      "color": "#000000",
-      "start": 6.00,
-      "duration": 18,
-      "skewX": 0,
-      "skewY": 0,
-      "position": {
-        "x": 0.245,
-        "y": 0.190
-      },
-      "animation": {
-        "fadeIn": {
-          "time": 0.63
-        }
-      }
+      "start": 3,
+      "duration": 6,
+      "text": "A — Horizontal Slice Flip",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
     },
     {
-      "id": "Paragraph",
+      "id": "scene-h-flip",
+      "type": "cube-scene",
+      "start": 3,
+      "transitionType": "h-flip-slices",
+      "slices": 12,
+      "flipDuration": 1.8,
+      "shift": 0.35,
+      "holdAfter": 2.5,
+      "background": "#0a0a14",
+      "depth": 0.025,
+      "size": { "width": 1, "height": 1 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revA/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revB/1920/1080" }] }
+      ]
+    },
+
+    {
+      "id": "label-2",
       "type": "text",
-      "textAlign": "left",
-      "text": "{{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.}}",
-      "fontSize": 35,
-      "fontFamily": "Roboto",
-      "lineHeight":41,
-      "letterSpacing":0,
-      "color": "#1111ff",
-      "start": 6.00,
-      "duration": 18,
-      "skewX": 0,
-      "skewY": 0,
-      "width": 620,
-      "textWrap": true,
-      "position": {
-        "x": 0.274,
-        "y": 0.450
-      },
-      "animation": {
-        "fadeIn": {
-          "time": 0.63
-        }
-      }
+      "start": 10,
+      "duration": 6,
+      "text": "B — Vertical Column Flip",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
+    },
+    {
+      "id": "scene-v-flip",
+      "type": "cube-scene",
+      "start": 10,
+      "transitionType": "v-flip-slices",
+      "slices": 12,
+      "flipDuration": 1.8,
+      "shift": 0.3,
+      "holdAfter": 2.5,
+      "background": "#0a1410",
+      "depth": 0.025,
+      "size": { "width": 1, "height": 1 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revB/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revC/1920/1080" }] }
+      ]
+    },
+
+    {
+      "id": "label-3",
+      "type": "text",
+      "start": 17,
+      "duration": 6.5,
+      "text": "C — Full Cube Spin (Y-axis)",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
+    },
+    {
+      "id": "scene-spin-y",
+      "type": "cube-scene",
+      "start": 17,
+      "transitionType": "cube-spin",
+      "spinAxis": "y",
+      "flipDuration": 2.0,
+      "holdAfter": 2.5,
+      "background": "#14100a",
+      "depth": 0.06,
+      "size": { "width": 0.9, "height": 0.9 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revC/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revD/1920/1080" }] }
+      ]
+    },
+
+    {
+      "id": "label-4",
+      "type": "text",
+      "start": 24,
+      "duration": 6.5,
+      "text": "D — Page-Peel Accordion",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
+    },
+    {
+      "id": "scene-page-peel",
+      "type": "cube-scene",
+      "start": 24,
+      "transitionType": "page-peel",
+      "slices": 10,
+      "flipDuration": 1.6,
+      "holdAfter": 2.5,
+      "background": "#0a0a0a",
+      "depth": 0.022,
+      "size": { "width": 1, "height": 1 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revD/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revE/1920/1080" }] }
+      ]
+    },
+
+    {
+      "id": "label-5",
+      "type": "text",
+      "start": 31,
+      "duration": 7,
+      "text": "E — Shatter & Reassemble",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
+    },
+    {
+      "id": "scene-shatter",
+      "type": "cube-scene",
+      "start": 31,
+      "transitionType": "shatter",
+      "cols": 7,
+      "rows": 5,
+      "flipDuration": 2.2,
+      "holdAfter": 2.5,
+      "background": "#100814",
+      "depth": 0.018,
+      "size": { "width": 1, "height": 1 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revE/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revF/1920/1080" }] }
+      ]
+    },
+
+    {
+      "id": "label-6",
+      "type": "text",
+      "start": 39,
+      "duration": 6.5,
+      "text": "F — Ripple Flip (Radial Wave)",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
+    },
+    {
+      "id": "scene-ripple",
+      "type": "cube-scene",
+      "start": 39,
+      "transitionType": "ripple",
+      "cols": 9,
+      "rows": 6,
+      "flipDuration": 1.9,
+      "holdAfter": 2.5,
+      "background": "#0a1214",
+      "depth": 0.018,
+      "size": { "width": 1, "height": 1 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revF/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revG/1920/1080" }] }
+      ]
+    },
+
+    {
+      "id": "label-7",
+      "type": "text",
+      "start": 46.5,
+      "duration": 6.5,
+      "text": "G — Diagonal Wipe",
+      "position": { "x": 0.5, "y": 0.92 },
+      "fontSize": 42,
+      "color": "#ffffffcc",
+      "zIndex": 10,
+      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
+    },
+    {
+      "id": "scene-diagonal",
+      "type": "cube-scene",
+      "start": 46.5,
+      "transitionType": "diagonal-wipe",
+      "cols": 9,
+      "rows": 6,
+      "flipDuration": 1.9,
+      "holdAfter": 2.5,
+      "background": "#140a08",
+      "depth": 0.018,
+      "size": { "width": 1, "height": 1 },
+      "position": { "x": 0, "y": 0 },
+      "faces": [
+        { "composition": [{ "src": "https://picsum.photos/seed/revG/1920/1080" }] },
+        { "composition": [{ "src": "https://picsum.photos/seed/revA/1920/1080" }] }
+      ]
     }
+
   ]
 }
