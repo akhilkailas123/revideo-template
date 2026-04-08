@@ -3,238 +3,175 @@
     "size": { "x": 1920, "y": 1080 }
   },
   "timeline": [
-
     {
-      "id": "title",
-      "type": "text",
+      "id": "cube1",
+      "type": "cube-scene",
       "start": 0,
-      "duration": 2.5,
-      "text": "3D Transition Showcase",
-      "position": { "x": 0.5, "y": 0.5 },
-      "fontSize": 80,
-      "color": "#ffffff",
-      "fontFamily": "sans-serif",
-      "zIndex": 5,
-      "animation": {
-        "fadeIn":  { "time": 0.5 },
-        "fadeOut": { "time": 0.5 }
-      }
-    },
+      "background": "#050510",
+      "resolution": 1024,
 
-    {
-      "id": "label-1",
-      "type": "text",
-      "start": 3,
-      "duration": 6,
-      "text": "A — Horizontal Slice Flip",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-h-flip",
-      "type": "cube-scene",
-      "start": 3,
-      "transitionType": "h-flip-slices",
-      "slices": 12,
-      "flipDuration": 1.8,
-      "shift": 0.35,
-      "holdAfter": 2.5,
-      "background": "#0a0a14",
-      "depth": 0.025,
-      "size": { "width": 1, "height": 1 },
-      "position": { "x": 0, "y": 0 },
-      "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revA/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revB/1920/1080" }] }
-      ]
-    },
-
-    {
-      "id": "label-2",
-      "type": "text",
-      "start": 10,
-      "duration": 6,
-      "text": "B — Vertical Column Flip",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-v-flip",
-      "type": "cube-scene",
-      "start": 10,
-      "transitionType": "v-flip-slices",
-      "slices": 12,
-      "flipDuration": 1.8,
-      "shift": 0.3,
-      "holdAfter": 2.5,
-      "background": "#0a1410",
-      "depth": 0.025,
-      "size": { "width": 1, "height": 1 },
-      "position": { "x": 0, "y": 0 },
-      "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revB/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revC/1920/1080" }] }
-      ]
-    },
-
-    {
-      "id": "label-3",
-      "type": "text",
-      "start": 17,
-      "duration": 6.5,
-      "text": "C — Full Cube Spin (Y-axis)",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-spin-y",
-      "type": "cube-scene",
-      "start": 17,
-      "transitionType": "cube-spin",
-      "spinAxis": "y",
-      "flipDuration": 2.0,
-      "holdAfter": 2.5,
-      "background": "#14100a",
-      "depth": 0.06,
-      "size": { "width": 0.9, "height": 0.9 },
-      "position": { "x": 0, "y": 0 },
-      "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revC/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revD/1920/1080" }] }
-      ]
-    },
-
-    {
-      "id": "label-4",
-      "type": "text",
-      "start": 24,
-      "duration": 6.5,
-      "text": "D — Page-Peel Accordion",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-page-peel",
-      "type": "cube-scene",
-      "start": 24,
-      "transitionType": "page-peel",
-      "slices": 10,
       "flipDuration": 1.6,
-      "holdAfter": 2.5,
-      "background": "#0a0a0a",
-      "depth": 0.022,
-      "size": { "width": 1, "height": 1 },
-      "position": { "x": 0, "y": 0 },
-      "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revD/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revE/1920/1080" }] }
-      ]
-    },
+      "slices": 12,
+      "direction": "horizontal",
+      "sliceDelay": 0.05,
 
-    {
-      "id": "label-5",
-      "type": "text",
-      "start": 31,
-      "duration": 7,
-      "text": "E — Shatter & Reassemble",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-shatter",
-      "type": "cube-scene",
-      "start": 31,
-      "transitionType": "shatter",
-      "cols": 7,
-      "rows": 5,
-      "flipDuration": 2.2,
-      "holdAfter": 2.5,
-      "background": "#100814",
-      "depth": 0.018,
-      "size": { "width": 1, "height": 1 },
-      "position": { "x": 0, "y": 0 },
-      "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revE/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revF/1920/1080" }] }
-      ]
-    },
+      "holdFirst": 1,
+      "holdAfter": 2,
 
-    {
-      "id": "label-6",
-      "type": "text",
-      "start": 39,
-      "duration": 6.5,
-      "text": "F — Ripple Flip (Radial Wave)",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-ripple",
-      "type": "cube-scene",
-      "start": 39,
-      "transitionType": "ripple",
-      "cols": 9,
-      "rows": 6,
-      "flipDuration": 1.9,
-      "holdAfter": 2.5,
-      "background": "#0a1214",
-      "depth": 0.018,
-      "size": { "width": 1, "height": 1 },
-      "position": { "x": 0, "y": 0 },
       "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revF/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revG/1920/1080" }] }
-      ]
-    },
+        {
+          "holdAfter": 2,
+          "composition": [
+            {
+              "type": "gradient",
+              "x0": 0,
+              "y0": 0,
+              "x1": 1,
+              "y1": 1,
+              "stops": [
+                { "offset": 0, "color": "#1e3c72" },
+                { "offset": 1, "color": "#2a5298" }
+              ]
+            },
+            {
+              "type": "circle",
+              "x": 0.8,
+              "y": 0.2,
+              "r": 0.15,
+              "color": "#ffffff22"
+            },
+            {
+              "type": "image",
+              "src": "https://picsum.photos/800/600",
+              "x": 0.5,
+              "y": 0.5,
+              "w": 0.6,
+              "h": 0.6,
+              "fit": "cover",
+              "radius": 20,
+              "shadow": true
+            },
+            {
+              "type": "text",
+              "text": "WELCOME",
+              "x": 0.5,
+              "y": 0.15,
+              "fontSize": 80,
+              "color": "#ffffff",
+              "fontWeight": "bold",
+              "shadow": true
+            }
+          ]
+        },
 
-    {
-      "id": "label-7",
-      "type": "text",
-      "start": 46.5,
-      "duration": 6.5,
-      "text": "G — Diagonal Wipe",
-      "position": { "x": 0.5, "y": 0.92 },
-      "fontSize": 42,
-      "color": "#ffffffcc",
-      "zIndex": 10,
-      "animation": { "fadeIn": { "time": 0.4 }, "fadeOut": { "time": 0.4 } }
-    },
-    {
-      "id": "scene-diagonal",
-      "type": "cube-scene",
-      "start": 46.5,
-      "transitionType": "diagonal-wipe",
-      "cols": 9,
-      "rows": 6,
-      "flipDuration": 1.9,
-      "holdAfter": 2.5,
-      "background": "#140a08",
-      "depth": 0.018,
-      "size": { "width": 1, "height": 1 },
-      "position": { "x": 0, "y": 0 },
-      "faces": [
-        { "composition": [{ "src": "https://picsum.photos/seed/revG/1920/1080" }] },
-        { "composition": [{ "src": "https://picsum.photos/seed/revA/1920/1080" }] }
+        {
+          "holdAfter": 2,
+          "composition": [
+            {
+              "type": "background",
+              "color": "#111111"
+            },
+            {
+              "type": "rect",
+              "x": 0.1,
+              "y": 0.2,
+              "w": 0.8,
+              "h": 0.6,
+              "color": "#222831",
+              "radius": 25
+            },
+            {
+              "type": "divider",
+              "x0": 0.1,
+              "y0": 0.5,
+              "x1": 0.9,
+              "y1": 0.5,
+              "color": "#00adb5",
+              "width": 3
+            },
+            {
+              "type": "text",
+              "text": "Clean UI Design",
+              "x": 0.5,
+              "y": 0.35,
+              "fontSize": 60,
+              "color": "#eeeeee"
+            },
+            {
+              "type": "text",
+              "text": "Modern • Minimal • Smooth",
+              "x": 0.5,
+              "y": 0.65,
+              "fontSize": 40,
+              "color": "#00adb5"
+            }
+          ]
+        },
+
+        {
+          "holdAfter": 2,
+          "composition": [
+            {
+              "type": "gradient",
+              "stops": [
+                { "offset": 0, "color": "#ff512f" },
+                { "offset": 1, "color": "#dd2476" }
+              ]
+            },
+            {
+              "type": "image",
+              "src": "https://picsum.photos/700/700",
+              "x": 0.3,
+              "y": 0.5,
+              "w": 0.4,
+              "h": 0.7,
+              "fit": "cover",
+              "radius": 30
+            },
+            {
+              "type": "text",
+              "text": "Dynamic Content",
+              "x": 0.7,
+              "y": 0.4,
+              "fontSize": 55,
+              "color": "#ffffff",
+              "align": "left",
+              "maxWidth": 0.4
+            },
+            {
+              "type": "text",
+              "text": "Powered by Revideo Engine",
+              "x": 0.7,
+              "y": 0.6,
+              "fontSize": 35,
+              "color": "#ffffffcc",
+              "align": "left"
+            }
+          ]
+        },
+
+        {
+          "holdAfter": 2,
+          "composition": [
+            {
+              "type": "background",
+              "color": "#000000"
+            },
+            {
+              "type": "text",
+              "text": "THANK YOU",
+              "x": 0.5,
+              "y": 0.5,
+              "fontSize": 90,
+              "color": "#ffffff",
+              "stroke": true,
+              "strokeColor": "#00ffff",
+              "strokeWidth": 2,
+              "shadow": true
+            }
+          ]
+        }
       ]
     }
-
   ]
 }
